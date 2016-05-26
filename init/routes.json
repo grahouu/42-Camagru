@@ -1,0 +1,9 @@
+[
+    {
+        "name": "home",
+        "controller": "home",
+        "action": "index",
+        "auth": false,
+        "redirect": "home2"
+    }
+]
