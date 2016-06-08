@@ -1,13 +1,84 @@
 <?php
 
-$files = array();
 
-$files = array_merge($files, glob('bin/[!app]*.php'));
-$files = array_merge($files, glob("controller/*.php"));
+class App {
 
-foreach ($files as $file) {
-    include $file;
+    private $objRoute;
+    private $controller;
+    private $action;
+    private $confService = [];
+    private $services = [];
+
+
+    function __construct()
+    {
+        session_start();
+        $files = array();
+        $files = array_merge($files, glob('bin/[!app]*.php'));
+        $files = array_merge($files, glob("controller/*.php"));
+        foreach ($files as $file) {
+            include $file;
+        }
+    }
+
+    function getRoute(){
+        return $this->objRoute;
+    }
+
+    function getController(){
+        return $this->controller;
+    }
+
+    function getConfigService($name){
+        return $this->confService[$name];
+    }
+
+    function setConfService($serviceName, $arrayConf){
+        $this->confService[$serviceName] = $arrayConf;
+    }
+
+    function getService($name) {
+        if (array_key_exists($name, $this->services))
+            return $this->services[$name];
+        $ClassService = $name . 'Service';
+        if (!is_subclass_of($ClassService, 'Service')) {
+            return null;
+        }
+        $config = $this->getConfigService($name);
+        if (!$config)
+            $config = [];
+        return $this->services[$name] = new $ClassService($config);
+    }
+
+    private function runService() {
+        $config = file_get_contents("init/Service.json");
+        $config = json_decode($config, true);
+
+        foreach ($config as $key => $value) {
+            $this->setConfService($key, $value);
+        }
+        return true;
+    }
+
+    private function runRoute() {
+        $this->objRoute = new Routes();
+        if ($this->objRoute->getUrlExist()){
+            $controller = $this->objRoute->getRoute('controller') . "Controller";
+            $this->controller = new $controller($this);
+            $this->action = $this->objRoute->getRoute("action");
+            return true;
+        }
+        return false;
+    }
+
+    function run() {
+        if ($this->runService() && $this->runRoute())
+            call_user_func(array($this->controller, $this->action));
+    }
+
 }
+
+
 
 
 ?>

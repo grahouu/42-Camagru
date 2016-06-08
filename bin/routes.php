@@ -6,14 +6,51 @@
 class Routes
 {
 
+    private $jsonRoutes = null;
+    private $jsonRoute = null;
+    private $url;
+    private $urlExist = false;
+    private $urlAuth = false;
+    private $urlArgs = [];
+
     function __construct()
     {
-        $this->routes = json_decode(file_get_contents("init/routes.json"), true);
-        $this->route = null;
+        $this->jsonRoutes = json_decode(file_get_contents("init/routes.json"), true);
         $this->url = $this->getPathInfos();
         $this->urlExist = $this->urlExist();
         $this->urlAuth = $this->urlAuth();
-        $this->args = $this->getArguments();
+        //$this->urlArgs = $this->getArguments();
+    }
+
+    private function urlCheckPattern($url, $urlFormat) {
+        $urlFormatSplit = explode("/", $urlFormat);
+        $urlPatternSplit = $urlFormatSplit;
+        $urlSplit = explode("/", $url);
+        $paramsValue = [];
+        preg_match_all("#:[a-z]*#", $urlFormat, $params);
+
+        foreach ($urlPatternSplit as $key => $value) {
+            if (preg_match("#^:#", $value)) {
+                $urlPatternSplit[$key] = preg_replace("#^:[a-z]*#", "", $value);
+                if (!$urlPatternSplit[$key])
+                    $urlPatternSplit[$key] = "([a-z0-9]+)";
+            }
+        }
+
+        $params = substr_replace($params[0], "", 0, 1);
+        $urlPattern = "#^" . implode("/", $urlPatternSplit) . "$#";
+
+        if (preg_match($urlPattern, $url)) {
+            $i = 0;
+            foreach ($urlFormatSplit as $key => $value) {
+                if (preg_match("#^:#", $value)) {
+                    $this->urlArgs[$params[$i]] = $urlSplit[$key];
+                    $i++;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     private function getPathInfos() {
@@ -32,33 +69,48 @@ class Routes
     }
 
     private function urlExist() {
-        foreach ($this->routes as $route) {
-            if ($route["name"] == $this->url) {
-                $this->$route = $route;
+        foreach ($this->jsonRoutes as $route) {
+            if ($this->urlCheckPattern($this->url, $route["name"])) {
+                $this->jsonRoute = $route;
                 return true;
-                // require "controller/" . $route["controller"] . "Controller.php";
-                // $functionName = $route["action"];
-                // $functionName();
-                // $enterRoute = true;
             }
         }
         return false;
     }
 
     private function getArguments() {
-        if ($this->urlExist) {
-            return array();
-        }else{
-            return array();
-        }
+        return $this->urlArgs;
     }
 
     private function urlAuth() {
         if ($this->urlExist) {
-            return true;
+            if (!$this->jsonRoute["auth"])
+                return true;
+            elseif (isset($_SESSION["user"])) {
+                return true;
+            }else{
+                return false;
+            }
         } else {
             return false;
         }
+    }
+
+    public function getRoute($element = null) {
+        if ($element)
+            return $this->jsonRoute[$element];
+        else
+            return $this->jsonRoute;
+    }
+
+    public function getUrlExist() {
+        return $this->urlExist;
+    }
+
+    public function routeAccess() {
+        if ($this->urlExist && $this->urlAuth)
+            return true;
+        return false;
     }
 }
 

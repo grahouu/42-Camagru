@@ -1,0 +1,9 @@
+{
+    "connection": {
+        "driver": "mysql",
+        "hostname": "localhost",
+        "dbname": "test",
+        "username": "root",
+        "password": "root"
+    }
+}

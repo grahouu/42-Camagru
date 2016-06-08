@@ -3,7 +3,21 @@
         "name": "home",
         "controller": "home",
         "action": "index",
+        "auth": true,
+        "redirect": "home2"
+    },
+    {
+        "name": "connexion",
+        "controller": "connexion",
+        "action": "index",
         "auth": false,
+        "redirect": "home2"
+    },
+    {
+        "name": "logout",
+        "controller": "connexion",
+        "action": "logout",
+        "auth": true,
         "redirect": "home2"
     }
 ]

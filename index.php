@@ -3,18 +3,12 @@
 require_once 'bin/app.php';
 
 try {
-    $connect = db_open_connexion();
-    $current_user = current_user();
-    $route = new Routes();
+    //$connect = db_open_connexion();
+    //$current_user = current_user();
 
-//-------- ROUTES -------
-    $routes = new Routes();
-    echo $routes->url;
+    $app = new app();
+    $app->run();
 
-    if (!$enterRoute) {
-        header('Status: 404 Not Found');
-        require "views/404.html";
-    }
 
 } catch (Exception $e) {
     $connect = null;
