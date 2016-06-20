@@ -2,7 +2,7 @@
     "connection": {
         "driver": "mysql",
         "hostname": "localhost",
-        "dbname": "test",
+        "dbname": "camagru",
         "username": "root",
         "password": "root"
     }

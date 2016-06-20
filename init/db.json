@@ -1,7 +1,7 @@
 {
     "db_driver": "mysql",
     "db_host": "localhost",
-    "db_name": "test",
+    "db_name": "camagru",
     "db_user": "root",
     "db_password": "root",
     "db_table": [
@@ -9,9 +9,34 @@
             "name": "user",
             "field": [
                 {
-                    "name": "surname",
+                    "name": "name",
                     "type": "varchar(32)",
                     "parameters": ["NOT NULL", "UNIQUE"]
+                },
+                {
+                    "name": "email",
+                    "type": "varchar(255)",
+                    "parameters": ["NOT NULL", "UNIQUE"]
+                },
+                {
+                    "name": "password",
+                    "type": "varchar(255)",
+                    "parameters": ["NOT NULL", "UNIQUE"]
+                },
+                {
+                    "name": "token",
+                    "type": "varchar(255)",
+                    "parameters": ["NOT NULL", "UNIQUE"]
+                },
+                {
+                    "name": "tokenPassword",
+                    "type": "varchar(255)",
+                    "parameters": []
+                },
+                {
+                    "name": "active",
+                    "type": "int(11)",
+                    "parameters": ["NOT NULL", "DEFAULT 0"]
                 }
             ]
         }

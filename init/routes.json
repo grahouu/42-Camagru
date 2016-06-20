@@ -7,17 +7,55 @@
         "redirect": "home2"
     },
     {
-        "name": "connexion",
-        "controller": "connexion",
+        "name": "signin",
+        "controller": "user",
         "action": "index",
         "auth": false,
         "redirect": "home2"
     },
     {
         "name": "logout",
-        "controller": "connexion",
+        "controller": "user",
         "action": "logout",
         "auth": true,
         "redirect": "home2"
+    },
+    {
+        "name": "signup",
+        "controller": "user",
+        "action": "signup",
+        "auth": false,
+        "redirect": "home2",
+        "layout": false
+    },
+    {
+        "name": "activate",
+        "controller": "user",
+        "action": "activate",
+        "auth": false,
+        "redirect": "home2"
+    },
+    {
+        "name": "recoverPassword",
+        "controller": "user",
+        "action": "recoverPassword",
+        "auth": false,
+        "redirect": "home2",
+        "layout": false
+    },
+    {
+        "name": "changePassword",
+        "controller": "user",
+        "action": "changePassword",
+        "auth": false,
+        "redirect": "home2"
+    },
+    {
+        "name": "generateImage",
+        "controller": "user",
+        "action": "generateImage",
+        "auth": true,
+        "redirect": "home2",
+        "layout": false
     }
 ]

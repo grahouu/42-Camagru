@@ -12,10 +12,18 @@ class Controller
         $this->content = "";
     }
 
-    public function render($view) {
-        $this->content = file_get_contents("views/" . $view);
-        include("views/layout.php");
-        exit();
+    public function render($view, $variables = array()) {
+        ob_start();
+        extract($variables);
+        include("views/" . $view);
+        $this->content = ob_get_clean();
+
+        $route = $this->application->getRoute();
+
+        if ($route->getRoute("layout"))
+            include("views/layout.php");
+        else
+            echo $this->content;
     }
 
     public function getService($name) {

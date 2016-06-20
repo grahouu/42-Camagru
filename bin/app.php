@@ -30,7 +30,10 @@ class App {
     }
 
     function getConfigService($name){
-        return $this->confService[$name];
+        if (isset($this->confService[$name]))
+            return $this->confService[$name];
+        else
+            return null;
     }
 
     function setConfService($serviceName, $arrayConf){
@@ -62,7 +65,7 @@ class App {
 
     private function runRoute() {
         $this->objRoute = new Routes();
-        if ($this->objRoute->getUrlExist()){
+        if ($this->objRoute->routeAccess()){
             $controller = $this->objRoute->getRoute('controller') . "Controller";
             $this->controller = new $controller($this);
             $this->action = $this->objRoute->getRoute("action");
@@ -74,6 +77,8 @@ class App {
     function run() {
         if ($this->runService() && $this->runRoute())
             call_user_func(array($this->controller, $this->action));
+        else
+            header('Location: signin');
     }
 
 }

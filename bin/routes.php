@@ -86,7 +86,7 @@ class Routes
         if ($this->urlExist) {
             if (!$this->jsonRoute["auth"])
                 return true;
-            elseif (isset($_SESSION["user"])) {
+            else if (isset($_SESSION["user"])) {
                 return true;
             }else{
                 return false;
@@ -98,7 +98,10 @@ class Routes
 
     public function getRoute($element = null) {
         if ($element)
-            return $this->jsonRoute[$element];
+            if (isset($this->jsonRoute[$element]))
+                return $this->jsonRoute[$element];
+            else
+                return true;
         else
             return $this->jsonRoute;
     }

@@ -2,26 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../assets/application.css">
     <title><?php echo $this->title ?></title>
 </head>
 <body>
     <div id="container">
 
-        <?php if ($_SESSION["user"]) { ?>
+        <?php if (isset($_SESSION["user"])) { ?>
 
-            <div id="menu" >
-                <ul class="liens">
-                    <li class="lien"> <a href="/controle_serveur/index.php/home" title="Ajouter ou consulter un contrôle">Accueil</a></li>
-                    <li> <a href="/controle_serveur/index.php/administration"> Administration </a> </li>
-                    <li> <a href="logout"> Deconnexion </a> </li>
-                </ul>
+            <div id="header" >
+                <a href="logout"> Deconnexion </a>
             </div>
 
         <?php } ?>
 
-        <div id="main">
+        <div id="content">
             <?php echo $this->content ?>
         </div>
+
+        <div id="footer">
+            footer
+        </div>
     </div>
+    
 </body>
 </html>
