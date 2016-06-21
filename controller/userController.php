@@ -123,7 +123,6 @@ class userController extends Controller{
 
     public function generateImage() {
         $datas = json_decode(file_get_contents('php://input'));
-        //$im = imagecreatefromstring($datas->photo);
 
         define('UPLOAD_DIR', 'assets/images/save/');
     	$img = $datas->photo;
@@ -134,7 +133,6 @@ class userController extends Controller{
     	$success = file_put_contents($file, $data);
 
         if ($success) {
-            echo "test";
             $image = imagecreatefrompng($file);
             $mask = imagecreatefrompng("assets/mask/" . $datas->filter);
             imagecopyresampled($image, $mask, 0, 0, 0, 0, imagesx($image), imagesy($image), imagesx($mask), imagesy($mask));

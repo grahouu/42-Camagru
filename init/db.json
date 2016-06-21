@@ -39,6 +39,21 @@
                     "parameters": ["NOT NULL", "DEFAULT 0"]
                 }
             ]
+        },
+        {
+            "name": "photo",
+            "field": [
+                {
+                    "name": "idUser",
+                    "type": "int(11)",
+                    "parameters": []
+                },
+                {
+                    "name": "photo",
+                    "type": "varchar(255)",
+                    "parameters": []
+                }
+            ]
         }
     ]
 
