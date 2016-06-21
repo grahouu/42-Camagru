@@ -30,7 +30,15 @@ body {
 /*------------------------------------------ side --------------------------------------- */
 .side {
     width: 30%;
-    background-color: red
+    background-color: red;
+}
+
+ul.photos {
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow-y: auto;
+  background-color: #ddd;
 }
 
 .bottom {

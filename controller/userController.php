@@ -9,6 +9,7 @@ class userController extends Controller{
         if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["password"]) {
 
             $usersModel = new usersModel($this->getService("connection")->getConnection());
+
             $_POST["password"] = sha1($_POST['password']);
             $user = $usersModel->exist($_POST);
 
@@ -123,6 +124,7 @@ class userController extends Controller{
 
     public function generateImage() {
         $datas = json_decode(file_get_contents('php://input'));
+        $photosModel = new photosModel($this->getService("connection")->getConnection());
 
         define('UPLOAD_DIR', 'assets/images/save/');
     	$img = $datas->photo;
@@ -132,12 +134,14 @@ class userController extends Controller{
     	$file = UPLOAD_DIR . uniqid() . '.png';
     	$success = file_put_contents($file, $data);
 
-        if ($success) {
+        if ($success && $datas->filter) {
             $image = imagecreatefrompng($file);
             $mask = imagecreatefrompng("assets/mask/" . $datas->filter);
             imagecopyresampled($image, $mask, 0, 0, 0, 0, imagesx($image), imagesy($image), imagesx($mask), imagesy($mask));
             imagepng($image, $file);
         }
+
+        $photosModel->save($_SESSION['user']['id'], $file);
     }
 }
 

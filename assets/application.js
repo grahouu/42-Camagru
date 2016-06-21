@@ -33,7 +33,7 @@ function sendPhoto(image) {
         }
     };
     xhr.send(JSON.stringify({
-        filter: targetLast.id,
+        filter: (targetLast ? targetLast.id:null),
         photo: image
     }));
 }

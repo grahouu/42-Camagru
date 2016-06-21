@@ -15,7 +15,16 @@
 </div>
 
 <div class="side">
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <canvas id="canvas" width="640" height="480" style="display: none"></canvas>
+
+    <ul class="photos">
+        <?php
+        foreach ($photos as $photo) {
+            echo "<li> <img src='/camagru/".$photo['photo']."' alt='photo'> </li>";
+        }
+        ?>
+    </ul>
+
 </div>
 
 <script src="../assets/application.js"></script>
