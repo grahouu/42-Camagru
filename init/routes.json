@@ -57,5 +57,21 @@
         "auth": true,
         "redirect": "home2",
         "layout": false
+    },
+    {
+        "name": "photo/:id([0-9]+)",
+        "controller": "user",
+        "action": "deletePhoto",
+        "auth": true,
+        "redirect": "home2",
+        "layout": false
+    },
+    {
+        "name": "photo/like/:id([0-9]+)",
+        "controller": "user",
+        "action": "likePhoto",
+        "auth": true,
+        "redirect": "home2",
+        "layout": false
     }
 ]

@@ -29,5 +29,9 @@ class Controller
     public function getService($name) {
         return $this->application->getService($name);
     }
+
+    public function getRoute(){
+        return $this->application->getRoute();
+    }
 }
  ?>

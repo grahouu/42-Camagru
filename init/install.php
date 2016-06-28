@@ -48,11 +48,17 @@ foreach ($initDb->db_table as $table) {
         $sql .= $field->name . " " . $field->type . " " . implode(" ", $field->parameters) . ",";
     }
 
-    $sql .= "PRIMARY KEY (id));";
+    $sql .= "PRIMARY KEY (id)); ";
 
     // ------ Execute sql -------
     if ($mysqli->query($sql) === TRUE) {
         echo "Table ". $table->name ." created successfully </br >";
+        if (isset($table->insert)){
+            if ($mysqli->query(implode($table->insert)) === TRUE)
+                echo "Element add in Table </br >";
+            else
+                echo "Error creating table: " . $mysqli->error . "</br >";
+        }
     } else {
         echo "Error creating table: " . $mysqli->error;
         exit();

@@ -6,7 +6,7 @@ class homeController extends Controller{
         //$con = $this->getService("connection");
 
         $photosModel = new photosModel($this->getService("connection")->getConnection());
-        $photos = $photosModel->getByUser($_SESSION['user']['id']);
+        $photos = $photosModel->getAll();
 
         $directory = "assets/mask";
         $masks = array_diff(scandir($directory), array('..', '.'));

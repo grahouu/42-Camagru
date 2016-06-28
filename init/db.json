@@ -37,7 +37,17 @@
                     "name": "active",
                     "type": "int(11)",
                     "parameters": ["NOT NULL", "DEFAULT 0"]
+                },
+                {
+                    "name": "created",
+                    "type": "TIMESTAMP",
+                    "parameters": ["DEFAULT CURRENT_TIMESTAMP"]
                 }
+            ],
+            "insert": [
+                "INSERT INTO camagru.user (name,email,password,token,tokenPassword,active) VALUES (",
+                "'Alexis Collin','asmalexis@hotmail.fr','37ac5e111a9b2f779e373f78efa4f7678b93feb1','3a901dececf0b6637bd5efafb09b14ff5f11d3a1', NULL, 1",
+                ")"
             ]
         },
         {
@@ -51,7 +61,52 @@
                 {
                     "name": "photo",
                     "type": "varchar(255)",
-                    "parameters": []
+                    "parameters": ["NOT NULL", "UNIQUE"]
+                },
+                {
+                    "name": "created",
+                    "type": "TIMESTAMP",
+                    "parameters": ["DEFAULT CURRENT_TIMESTAMP"]
+                }
+            ]
+        },
+        {
+            "name": "likes",
+            "field": [
+                {
+                    "name": "idUser",
+                    "type": "int(11)",
+                    "parameters": ["NOT NULL"]
+                },
+                {
+                    "name": "idPhoto",
+                    "type": "int(11)",
+                    "parameters": ["NOT NULL"]
+                },
+                {
+                    "name": "created",
+                    "type": "TIMESTAMP",
+                    "parameters": ["DEFAULT CURRENT_TIMESTAMP"]
+                }
+            ]
+        },
+        {
+            "name": "comments",
+            "field": [
+                {
+                    "name": "idPhoto",
+                    "type": "int(11)",
+                    "parameters": ["NOT NULL"]
+                },
+                {
+                    "name": "comment",
+                    "type": "varchar(255)",
+                    "parameters": ["NOT NULL"]
+                },
+                {
+                    "name": "created",
+                    "type": "TIMESTAMP",
+                    "parameters": ["DEFAULT CURRENT_TIMESTAMP"]
                 }
             ]
         }

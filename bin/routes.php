@@ -78,7 +78,7 @@ class Routes
         return false;
     }
 
-    private function getArguments() {
+    public function getArguments() {
         return $this->urlArgs;
     }
 
@@ -97,12 +97,15 @@ class Routes
     }
 
     public function getRoute($element = null) {
-        if ($element)
-            if (isset($this->jsonRoute[$element]))
+        if ($element){
+            if (isset($this->jsonRoute[$element])){
                 return $this->jsonRoute[$element];
-            else
+            }elseif(!isset($this->jsonRoute[$element]) && $element == "layout"){
                 return true;
-        else
+            }else{
+                return false;
+            }
+        }else
             return $this->jsonRoute;
     }
 

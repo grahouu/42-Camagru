@@ -41,6 +41,12 @@ ul.photos {
   background-color: #ddd;
 }
 
+ul.photos li {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
 .bottom {
     margin:0 auto 0 auto;
     text-align:center;
@@ -57,6 +63,31 @@ ul.images li {
   display: inline;
   width: 150px;
   height: 150px;
+}
+
+.photo{
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+div.icons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 30px;
+    width: 100%;
+}
+
+img.icons{
+    display: inline;
+    width: 30px;
+    height: 30px;
+}
+
+img.icons:hover{
+    border-top-style: solid;
+    border-top-color: black;
 }
 
 .selected{

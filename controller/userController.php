@@ -123,6 +123,8 @@ class userController extends Controller{
     }
 
     public function generateImage() {
+        header('Content-Type: application/json');
+
         $datas = json_decode(file_get_contents('php://input'));
         $photosModel = new photosModel($this->getService("connection")->getConnection());
 
@@ -139,9 +141,48 @@ class userController extends Controller{
             $mask = imagecreatefrompng("assets/mask/" . $datas->filter);
             imagecopyresampled($image, $mask, 0, 0, 0, 0, imagesx($image), imagesy($image), imagesx($mask), imagesy($mask));
             imagepng($image, $file);
+            $photosModel->save($_SESSION['user']['id'], $file);
+            echo json_encode(array(
+                'success' => true,
+                "file" => $file
+            ));
+        }else{
+            echo json_encode(array(
+                'success' => flase,
+                'msg' => $success
+            ));
         }
+    }
 
-        $photosModel->save($_SESSION['user']['id'], $file);
+    public function deletePhoto() {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] == "DELETE"){
+            $photosModel = new photosModel($this->getService("connection")->getConnection());
+            $args = $this->getRoute()->getArguments();
+            $photo = $photosModel->getById($args["id"]);
+            if ($photo && $photo["idUser"] == $_SESSION["user"]["id"] && unlink($photo["photo"])) {
+                $success = $photosModel->deleteByIdPhoto($args["id"]);
+            }
+            echo json_encode(array('success' => $success));
+        }else{
+            echo json_encode(array('success' => false));
+        }
+    }
+
+    public function likePhoto() {
+        header('Content-Type: application/json');
+        $success = false;
+        $args = $this->getRoute()->getArguments();
+
+        if ($_SERVER['REQUEST_METHOD'] == "GET" && $args["id"]){
+            $photosModel = new photosModel($this->getService("connection")->getConnection());
+
+            $photo = $photosModel->getById($args["id"]);
+            if ($photo)
+                $success = $photosModel->likeByIdPhoto($args["id"]);
+        }
+        echo json_encode(array('success' => $success));
     }
 }
 
