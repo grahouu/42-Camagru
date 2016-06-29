@@ -144,7 +144,8 @@ class userController extends Controller{
             $photosModel->save($_SESSION['user']['id'], $file);
             echo json_encode(array(
                 'success' => true,
-                "file" => $file
+                "file" => $file,
+                'id' => $this->getService("connection")->getConnection()->lastInsertId()
             ));
         }else{
             echo json_encode(array(
