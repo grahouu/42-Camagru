@@ -125,6 +125,9 @@ class userController extends Controller{
     public function generateImage() {
         header('Content-Type: application/json');
 
+        var_dump($_POST);
+        exit();
+
         $datas = json_decode(file_get_contents('php://input'));
         $photosModel = new photosModel($this->getService("connection")->getConnection());
 
@@ -187,18 +190,12 @@ class userController extends Controller{
     }
 
     public function commentPhoto() {
-        header('Content-Type: application/json');
         $success = false;
         $args = $this->getRoute()->getArguments();
 
-        if ($_SERVER['REQUEST_METHOD'] == "GET" && $args["id"]){
-            $photosModel = new photosModel($this->getService("connection")->getConnection());
-
-            $photo = $photosModel->getById($args["id"]);
-            if ($photo)
-                $success = $photosModel->likeByIdPhoto($args["id"]);
+        if ($_SERVER['REQUEST_METHOD'] == "POST"){
+            var_dump($_POST);
         }
-        echo json_encode(array('success' => $success));
     }
 }
 

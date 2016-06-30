@@ -75,9 +75,8 @@ function like(element, id){
 
 function comment(element, id){
     var modal = document.getElementById('myModalComment');
-    console.log(modal);
     var span = modal.getElementsByClassName("close")[0];
-    var btn = modal.getElementsByClassName("submit");
+    var btn = modal.getElementsByClassName("submit")[0];
     console.log(btn);
     modal.style.display = "block";
 
@@ -91,30 +90,24 @@ function comment(element, id){
         }
     }
 
-    btn.onclick = function(){
-        console.log("test");
+    btn.onclick = function(event){
+        var form = document.getElementById('formComment');
+        var data = new FormData(form);
+
+        var text = form.elements["comment"].value;
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'photo/comment/' + id);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("okok");
+            }
+        };
+        xhr.send(data);
+        console.log(text);
     }
 
 }
-
-function sendComment(element, id){
-    var form = document.getElementById('formComment').submit();
-    // var data = new FormData(form);
-    //
-    // var text = form.elements["comment"].value;
-    // var xhr = new XMLHttpRequest();
-    // xhr.open('POST', 'photo/comment/' + id);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.onload = function() {
-    //     if (xhr.status === 200) {
-    //         console.log("okok");
-    //     }
-    // };
-    // xhr.send(data);
-    // console.log(text);
-}
-
-
 
 element.onclick = function(event) {
     var target = getEventTarget(event);
@@ -133,20 +126,76 @@ element.onclick = function(event) {
 
 }
 
+// function sendPhoto(image) {
+//     var xhr = new XMLHttpRequest();
+//     xhr.open('POST', 'generateImage');
+//     xhr.setRequestHeader('Content-Type', 'application/json');
+//     xhr.onload = function() {
+//         if (xhr.status === 200) {
+//             var photoInfo = JSON.parse(xhr.responseText);
+//             if (photoInfo.success){
+//                 addPhoto(photoInfo);
+//             }
+//         }
+//     };
+//     xhr.send(JSON.stringify({
+//         filter: (targetLast ? targetLast.id:null),
+//         photo: image
+//     }));
+// }
+
 function sendPhoto(image) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'generateImage');
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.open('POST', 'generateImage', true);
+    var formData = new FormData();
+
+    formData.append('photos[]', image);
+    formData.append('filter', targetLast.id);
+
     xhr.onload = function() {
         if (xhr.status === 200) {
             var photoInfo = JSON.parse(xhr.responseText);
             if (photoInfo.success){
-                addPhoto(photoInfo);
+                //addPhoto(photoInfo);
             }
         }
     };
-    xhr.send(JSON.stringify({
-        filter: (targetLast ? targetLast.id:null),
-        photo: image
-    }));
+    xhr.send(formData);
+}
+
+var form = document.getElementById('file-form');
+var fileSelect = document.getElementById('file-select');
+var uploadButton = document.getElementById('upload-button');
+
+form.onsubmit = function(event) {
+    event.preventDefault();
+    uploadButton.innerHTML = 'Uploading...';
+    var files = fileSelect.files;
+    var formData = new FormData();
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        // Check the file type.
+        if (!file.type.match('image.*')) {
+            continue;
+        }
+
+        // Add the file to the request.
+        formData.append('photos[]', file, file.name);
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'generateImage', true);
+
+    // Set up a handler for when the request finishes.
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        // File(s) uploaded.
+        uploadButton.innerHTML = 'Upload';
+      } else {
+        alert('An error occurred!');
+      }
+    };
+    xhr.send(formData);
+
 }

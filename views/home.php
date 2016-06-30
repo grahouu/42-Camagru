@@ -1,6 +1,10 @@
 <div class="main">
     <video id="video" autoplay></video>
     <button id="startbutton" style="display: none;">Prendre une photo</button>
+    <form id="file-form" action="handler.php" method="POST">
+      <input type="file" id="file-select" name="photos[]" multiple/>
+      <button type="submit" id="upload-button">Upload</button>
+    </form>
 
     <!-- <div class="bottom">
         <ul id="image-selector" class="images">
@@ -15,8 +19,6 @@
 </div>
 
 <div class="side">
-
-    <!-- <ul class="photos" id="images-list"> -->
     <ul id="image-selector" class="images">
         <?php
         foreach ($masks as $mask) {
@@ -58,7 +60,7 @@
     <span class="close">x</span>
       <form class="" id="formComment" method="post">
         <textarea name="comment" maxlength='255' maxlength='2' rows="2" cols="50" placeholder="Saisir un texte ici."></textarea>
-        <input type="button" onsubmit="sendComment()" value="Envoyer">
+        <input type="button" class="submit" value="Envoyer">
       </form>
   </div>
 
