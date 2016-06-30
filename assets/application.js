@@ -32,6 +32,12 @@ function addPhoto(photoInfo){
     like.setAttribute("onclick", "like(this, "+ photoInfo.id +")");
     div.appendChild(like);
 
+    var comment = document.createElement('img');
+    comment.src = "/camagru/assets/images/comment.png";
+    comment.className = "icons";
+    comment.setAttribute("onclick", "comment(this, "+ photoInfo.id +")");
+    div.appendChild(comment);
+
     li.appendChild(div);
 
     imagesList.appendChild(li);
@@ -69,7 +75,10 @@ function like(element, id){
 
 function comment(element, id){
     var modal = document.getElementById('myModalComment');
+    console.log(modal);
     var span = modal.getElementsByClassName("close")[0];
+    var btn = modal.getElementsByClassName("submit");
+    console.log(btn);
     modal.style.display = "block";
 
     span.onclick = function() {
@@ -81,7 +90,31 @@ function comment(element, id){
             modal.style.display = "none";
         }
     }
+
+    btn.onclick = function(){
+        console.log("test");
+    }
+
 }
+
+function sendComment(element, id){
+    var form = document.getElementById('formComment').submit();
+    // var data = new FormData(form);
+    //
+    // var text = form.elements["comment"].value;
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'photo/comment/' + id);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // xhr.onload = function() {
+    //     if (xhr.status === 200) {
+    //         console.log("okok");
+    //     }
+    // };
+    // xhr.send(data);
+    // console.log(text);
+}
+
+
 
 element.onclick = function(event) {
     var target = getEventTarget(event);

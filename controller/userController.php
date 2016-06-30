@@ -185,6 +185,21 @@ class userController extends Controller{
         }
         echo json_encode(array('success' => $success));
     }
+
+    public function commentPhoto() {
+        header('Content-Type: application/json');
+        $success = false;
+        $args = $this->getRoute()->getArguments();
+
+        if ($_SERVER['REQUEST_METHOD'] == "GET" && $args["id"]){
+            $photosModel = new photosModel($this->getService("connection")->getConnection());
+
+            $photo = $photosModel->getById($args["id"]);
+            if ($photo)
+                $success = $photosModel->likeByIdPhoto($args["id"]);
+        }
+        echo json_encode(array('success' => $success));
+    }
 }
 
 ?>

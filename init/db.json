@@ -88,7 +88,9 @@
                     "type": "TIMESTAMP",
                     "parameters": ["DEFAULT CURRENT_TIMESTAMP"]
                 }
-            ]
+            ],
+            "pk": "idUser, idPhoto",
+            "id": false
         },
         {
             "name": "comments",

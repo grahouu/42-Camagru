@@ -56,9 +56,9 @@
   <!-- Modal content -->
   <div class="modal-content">
     <span class="close">x</span>
-      <form class="" method="post">
+      <form class="" id="formComment" method="post">
         <textarea name="comment" maxlength='255' maxlength='2' rows="2" cols="50" placeholder="Saisir un texte ici."></textarea>
-        <input type="submit" value="Envoyer">
+        <input type="button" onsubmit="sendComment()" value="Envoyer">
       </form>
   </div>
 

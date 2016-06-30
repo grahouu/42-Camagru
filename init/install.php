@@ -42,13 +42,19 @@ foreach ($initDb->db_table as $table) {
     $sql = "CREATE TABLE ". $initDb->db_name. "." .$table->name ." ";
 
     //--------- Add field ----------
-    $sql .= "(id int NOT NULL AUTO_INCREMENT, ";
+    if (!isset($table->id) || $table->id)
+        $sql .= "(id int NOT NULL AUTO_INCREMENT, ";
+    else
+        $sql .= "(";
 
     foreach ($table->field as $field) {
         $sql .= $field->name . " " . $field->type . " " . implode(" ", $field->parameters) . ",";
     }
 
-    $sql .= "PRIMARY KEY (id)); ";
+    if (isset($table->pk))
+        $sql .= "PRIMARY KEY (". $table->pk .")); ";
+    else
+        $sql .= "PRIMARY KEY (id)); ";
 
     // ------ Execute sql -------
     if ($mysqli->query($sql) === TRUE) {
