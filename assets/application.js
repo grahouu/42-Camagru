@@ -149,14 +149,14 @@ function sendPhoto(image) {
     xhr.open('POST', 'generateImage', true);
     var formData = new FormData();
 
-    formData.append('photos[]', image);
+    formData.append('photo', image);
     formData.append('filter', targetLast.id);
 
     xhr.onload = function() {
         if (xhr.status === 200) {
             var photoInfo = JSON.parse(xhr.responseText);
             if (photoInfo.success){
-                //addPhoto(photoInfo);
+                addPhoto(photoInfo);
             }
         }
     };
@@ -170,28 +170,18 @@ var uploadButton = document.getElementById('upload-button');
 form.onsubmit = function(event) {
     event.preventDefault();
     uploadButton.innerHTML = 'Uploading...';
-    var files = fileSelect.files;
     var formData = new FormData();
-    for (var i = 0; i < files.length; i++) {
-        var file = files[i];
 
-        // Check the file type.
-        if (!file.type.match('image.*')) {
-            continue;
-        }
-
-        // Add the file to the request.
-        formData.append('photos[]', file, file.name);
-    }
+    formData.append('photo', document.getElementById("preview").src);
+    formData.append('filter', targetLast.id);
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'generateImage', true);
-
-    // Set up a handler for when the request finishes.
     xhr.onload = function () {
       if (xhr.status === 200) {
-        // File(s) uploaded.
         uploadButton.innerHTML = 'Upload';
+        var photoInfo = JSON.parse(xhr.responseText);
+        addPhoto(photoInfo);
       } else {
         alert('An error occurred!');
       }
@@ -199,3 +189,15 @@ form.onsubmit = function(event) {
     xhr.send(formData);
 
 }
+
+document.getElementById("file-select").onchange = function () {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        // get loaded data and render thumbnail.
+        document.getElementById("preview").src = e.target.result;
+    };
+
+    // read the image file as a data URL
+    reader.readAsDataURL(this.files[0]);
+};

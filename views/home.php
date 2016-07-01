@@ -1,10 +1,16 @@
 <div class="main">
     <video id="video" autoplay></video>
-    <button id="startbutton" style="display: none;">Prendre une photo</button>
+    <button id="takepicture" style="display: none;">Prendre une photo</button>
+
+    <img id="preview" alt="preview" height="50" width="50"/>
+    <canvas id="canvas"></canvas>
+
     <form id="file-form" action="handler.php" method="POST">
-      <input type="file" id="file-select" name="photos[]" multiple/>
+      <input type="file" id="file-select" name="photo"/>
       <button type="submit" id="upload-button">Upload</button>
     </form>
+
+    <button type="button" id="upload-button">GENERATE !</button>
 
     <!-- <div class="bottom">
         <ul id="image-selector" class="images">
@@ -31,7 +37,6 @@
 </div>
 
 <div class="side">
-    <canvas id="canvas" style="display: none"></canvas>
 
     <ul class="photos" id="images-list">
         <?php

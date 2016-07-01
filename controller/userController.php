@@ -125,23 +125,21 @@ class userController extends Controller{
     public function generateImage() {
         header('Content-Type: application/json');
 
-        var_dump($_POST);
-        exit();
-
-        $datas = json_decode(file_get_contents('php://input'));
+        $datas = $_POST;
         $photosModel = new photosModel($this->getService("connection")->getConnection());
 
         define('UPLOAD_DIR', 'assets/images/save/');
-    	$img = $datas->photo;
-    	$img = str_replace('data:image/png;base64,', '', $img);
+    	$img = $datas['photo'];
+        $pattern = "/^data:image\/(png|jpeg|jpg);base64,/";
+    	$img = preg_replace($pattern, '', $img);
     	$img = str_replace(' ', '+', $img);
     	$data = base64_decode($img);
     	$file = UPLOAD_DIR . uniqid() . '.png';
     	$success = file_put_contents($file, $data);
 
-        if ($success && $datas->filter) {
+        if ($success && $datas['filter']) {
             $image = imagecreatefrompng($file);
-            $mask = imagecreatefrompng("assets/mask/" . $datas->filter);
+            $mask = imagecreatefrompng("assets/mask/" . $datas['filter']);
             imagecopyresampled($image, $mask, 0, 0, 0, 0, imagesx($image), imagesy($image), imagesx($mask), imagesy($mask));
             imagepng($image, $file);
             $photosModel->save($_SESSION['user']['id'], $file);
