@@ -96,6 +96,11 @@
             "name": "comments",
             "field": [
                 {
+                    "name": "idUser",
+                    "type": "int(11)",
+                    "parameters": ["NOT NULL"]
+                },
+                {
                     "name": "idPhoto",
                     "type": "int(11)",
                     "parameters": ["NOT NULL"]

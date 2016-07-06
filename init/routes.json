@@ -81,5 +81,13 @@
         "auth": true,
         "redirect": "home2",
         "layout": false
+    },
+    {
+        "name": "photo/paginate/:page([0-9]+)",
+        "controller": "home",
+        "action": "paginate",
+        "auth": true,
+        "redirect": "home2",
+        "layout": false
     }
 ]

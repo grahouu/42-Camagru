@@ -138,9 +138,23 @@ class userController extends Controller{
     	$success = file_put_contents($file, $data);
 
         if ($success && $datas['filter']) {
+
+            //Recuperation du mask et de la photo
             $image = imagecreatefrompng($file);
             $mask = imagecreatefrompng("assets/mask/" . $datas['filter']);
-            imagecopyresampled($image, $mask, 0, 0, 0, 0, imagesx($image), imagesy($image), imagesx($mask), imagesy($mask));
+
+            //Creation du nouveau mask
+            $newMask = imagecreatetruecolor($datas["filterWidth"], $datas["filterHeight"]);
+            imagealphablending($newMask, false);
+            imagesavealpha($newMask,true);
+            $transparent = imagecolorallocatealpha($newMask, 255, 255, 255, 127);
+            imagefilledrectangle($newMask, 0, 0, $datas["filterWidth"], $datas["filterHeight"], $transparent);
+            imagecopyresampled($newMask, $mask, 0, 0, 0, 0, $datas["filterWidth"], $datas["filterHeight"], imagesx($mask), imagesy($mask));
+
+            //Merge la photo avec le nouveau mask
+            imagecopy($image, $newMask, $datas["filterX"], $datas["filterY"], 0, 0, $datas["filterWidth"], $datas["filterHeight"]);
+
+            //sauvegarde de la nouvelle image
             imagepng($image, $file);
             $photosModel->save($_SESSION['user']['id'], $file);
             echo json_encode(array(
@@ -188,12 +202,25 @@ class userController extends Controller{
     }
 
     public function commentPhoto() {
-        $success = false;
         $args = $this->getRoute()->getArguments();
+        $commentsModel = new commentsModel($this->getService("connection")->getConnection());
+        $response = array('success' => false);
 
         if ($_SERVER['REQUEST_METHOD'] == "POST"){
-            var_dump($_POST);
+            if ($commentsModel->create($_SESSION["user"]["id"], $args["id"], $_POST['comment'])){
+                $response["comment"] = $_POST['comment'];
+                $response["user"] = $_SESSION['user']['email'];
+                $response["success"] = true;
+            }
+
+        }else if ($_SERVER['REQUEST_METHOD'] == "GET"){
+            if ( ($result = $commentsModel->getByIdPhoto($args["id"])) ){
+                $response["data"] = $result;
+                $response["success"] = true;
+            }
         }
+
+        echo json_encode($response);
     }
 }
 
