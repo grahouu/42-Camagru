@@ -27,10 +27,12 @@ class homeController extends Controller{
 
         if ($_SERVER['REQUEST_METHOD'] == "GET" && $args['page']){
             $photosModel = new photosModel($this->getService("connection")->getConnection());
+            $count = $photosModel->count()['nb'];
             $return['success'] = true;
             $return['page'] = $args['page'];
-            $return['pageMax'] = ceil($photosModel->count()['nb']/$size);
+            $return['pageMax'] = $count ? ceil($count/$size) : 1;
             $return['photos'] = $photosModel->paginate($args['page'], $size);
+            $return['TotalPhotos'] = $count;
         }
 
         echo json_encode($return);

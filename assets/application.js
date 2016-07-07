@@ -52,7 +52,7 @@ function addPhoto(photoInfo){
     div.appendChild(like);
 
     var nbLikes = document.createElement('span');
-    nbLikes.innerHTML = 0;
+    nbLikes.innerHTML = photoInfo.nbLikes;
     nbLikes.setAttribute("id", "nb-likes:" + photoInfo.id)
     div.appendChild(nbLikes);
 
@@ -63,7 +63,7 @@ function addPhoto(photoInfo){
     div.appendChild(comment);
 
     var nbComments = document.createElement('span');
-    nbComments.innerHTML = 0;
+    nbComments.innerHTML = photoInfo.nbComments;
     nbComments.setAttribute("id", "nb-comments:" + photoInfo.id)
     div.appendChild(nbComments);
 
@@ -181,7 +181,12 @@ function paginatePage(page) {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             if (response.success){
-                paginate(response);
+                console.log(response.photos.length);
+                //return;
+                if (response.TotalPhotos != '0' && !response.photos.length)
+                    paginatePage(--pageActual);
+                else
+                    paginate(response);
             }
         }
     };
@@ -198,7 +203,7 @@ function trash(element, id){
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             if (response.success){
-                element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
+                paginatePage(pageActual);
             }
         }
     };

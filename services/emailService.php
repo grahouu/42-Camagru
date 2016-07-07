@@ -45,4 +45,21 @@ class emailService extends Service {
             return false;
     }
 
+    function sendUserNewComment($emailPhoto, $emailComment, $comment) {
+
+        $to = $emailPhoto;
+        $sujet = 'Un nouveau commentaire a ete posté';
+        $body = ' Bonjour, voici le nouveau commentaire posté par' . $emailComment . ' : </ br> ' . $comment;
+        $entete = "MIME-Version: 1.0\r\n";
+        $entete .= "Content-type: text/html; charset=UTF-8\r\n";
+        $entete .= 'From: CreatiQ.FR ::' . "\r\n" .
+        'Reply-To: contact@creatiq.fr' . "\r\n" .
+        'X-Mailer: PHP/' . phpversion();
+
+        if (mail($to,$sujet,$body,$entete))
+            return true;
+        else
+            return false;
+    }
+
 }

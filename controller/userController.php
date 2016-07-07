@@ -172,6 +172,7 @@ class userController extends Controller{
 
     public function deletePhoto() {
         header('Content-Type: application/json');
+        $success = false;
 
         if ($_SERVER['REQUEST_METHOD'] == "DELETE"){
             $photosModel = new photosModel($this->getService("connection")->getConnection());
@@ -180,10 +181,9 @@ class userController extends Controller{
             if ($photo && $photo["idUser"] == $_SESSION["user"]["id"] && unlink($photo["photo"])) {
                 $success = $photosModel->deleteByIdPhoto($args["id"]);
             }
-            echo json_encode(array('success' => $success));
-        }else{
-            echo json_encode(array('success' => false));
         }
+
+        echo json_encode(array('success' => $success));
     }
 
     public function likePhoto() {
@@ -203,11 +203,15 @@ class userController extends Controller{
 
     public function commentPhoto() {
         $args = $this->getRoute()->getArguments();
+        $emailService = $this->getService("email");
         $commentsModel = new commentsModel($this->getService("connection")->getConnection());
+        $photosModel = new photosModel($this->getService("connection")->getConnection());
         $response = array('success' => false);
 
         if ($_SERVER['REQUEST_METHOD'] == "POST"){
             if ($commentsModel->create($_SESSION["user"]["id"], $args["id"], $_POST['comment'])){
+                $photo = $photosModel->getById($args["id"], true);
+                $emailService->sendUserNewComment($photo['email'], $_SESSION['user']['email'], $_POST['comment']);
                 $response["comment"] = $_POST['comment'];
                 $response["user"] = $_SESSION['user']['email'];
                 $response["success"] = true;

@@ -2,13 +2,24 @@
 
 class photosModel extends Models {
 
-    function getLikes() {
+    function getLikes($id = null) {
         $sql = 'SELECT idPhoto, COUNT(*) AS nb FROM likes GROUP BY idPhoto';
         $return = [];
         foreach ($this->getConnection()->query($sql) as $row) {
             $return[$row['idPhoto']] = $row['nb'];
         }
         return $return;
+    }
+
+    function getLikesById($id){
+        if ($id){
+            $sql = 'SELECT COUNT(*) AS nb FROM likes WHERE idPhoto=' . $id;
+            $req = $this->getConnection()->prepare($sql);
+            $req->execute();
+            return $req->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
     }
 
     function getComments() {
@@ -18,6 +29,17 @@ class photosModel extends Models {
             $return[$row['idPhoto']][] = $row['comment'];
         }
         return $return;
+    }
+
+    function getCommentsById($id){
+        if ($id){
+            $sql = 'SELECT COUNT(*) AS nb FROM comments WHERE idPhoto=' . $id;
+            $req = $this->getConnection()->prepare($sql);
+            $req->execute();
+            return $req->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
     }
 
     function save($idUser, $namePhoto){
@@ -30,10 +52,16 @@ class photosModel extends Models {
         ));
     }
 
-    function getById($id) {
-        $sql = 'SELECT * FROM photo WHERE id = ' . $id;
-        $result = $this->getConnection()->query($sql)->fetch(PDO::FETCH_ASSOC);
-        return $result;
+    function getById($id, $user = false) {
+        if ($user)
+            $sql = 'SELECT photo.*, user.id, user.email FROM photo INNER JOIN user ON photo.idUser = user.id WHERE id = ' . $id;
+        else
+            $sql = 'SELECT * FROM photo WHERE id = ' . $id;
+
+        $req = $this->getConnection()->prepare($sql);
+        $result = $req->execute();
+
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     function getByUser($idUser){
@@ -75,12 +103,19 @@ class photosModel extends Models {
     }
 
     function paginate($page, $size){
+        $return = array();
         $start = ($page - 1) * $size;
         $sql = "SELECT * FROM photo ORDER BY created ASC LIMIT " . $start . "," . $size;
         $req = $this->getConnection()->prepare($sql);
         $result = $req->execute();
 
-        return $req->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($req->fetchAll(PDO::FETCH_ASSOC) as $key => $photo) {
+            $photo["nbLikes"] = $this->getLikesById($photo['id'])['nb'];
+            $photo["nbComments"] = $this->getCommentsById($photo['id'])['nb'];
+            $return[] = $photo;
+        }
+
+        return $return;
     }
 
     function count(){
