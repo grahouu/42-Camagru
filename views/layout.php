@@ -12,6 +12,9 @@
 
             <div id="header" >
                 <a href="logout"> Deconnexion </a>
+                <?php
+                    echo $_SESSION["user"]["name"] . " - " . $_SESSION["user"]["email"]
+                ?>
             </div>
 
         <?php } ?>
@@ -24,6 +27,6 @@
             footer
         </div>
     </div>
-    
+
 </body>
 </html>

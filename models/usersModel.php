@@ -4,7 +4,10 @@ class usersModel extends Models {
 
     function create($user) {
 
-        if(!empty($user) && strlen($user['name'])>4 && filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+        $success = false;
+        $msg = "";
+
+        if(!empty($user) && strlen($user['name']) >= 4 && filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
             $name = addslashes($user['name']);
             $email = addslashes($user['email']);
             $password = sha1($user['password']);
@@ -19,16 +22,20 @@ class usersModel extends Models {
 
             $sql = 'INSERT INTO user (name, email, password, token) VALUES (:name, :email, :password, :token)';
             $req = $this->getConnection()->prepare($sql);
-            return $req->execute($q);
-        }else{
-            if(!empty($user) && strlen($user['name'])<4){
-                $error_prenom = ' Votre prenom doit comporter au minimun 4 caracteres !';
-            }
-            if(!empty($user) && !filter_var($user['email'], FILTER_VALIDATE_EMAIL)){
-                $error_email = ' Votre Email n\'est pas valide !';
-            }
+            if ($req->execute($q)){
+                $msg = "Votre compte a bien ete cree";
+                $success = $token;
 
+            }else
+                $msg = $req->errorInfo();
+        }else{
+            if(!empty($user) && strlen($user['name'])<4)
+                $msg .= ' Votre prenom doit comporter au minimun 4 caracteres !';
+            if(!empty($user) && !filter_var($user['email'], FILTER_VALIDATE_EMAIL))
+                $msg .= ' Votre Email n\'est pas valide !';
         }
+
+        return array("success" => $success, "msg" => $msg);
     }
 
     function update($filters, $values) {
@@ -62,7 +69,7 @@ class usersModel extends Models {
         $sql = "SELECT * FROM user WHERE ";
         $len = count($array) - 1;
         $i = 0;
-        
+
         foreach ($array as $key => $value) {
             $sql .= $key . " = :" . $key;
             if ($len > $i)

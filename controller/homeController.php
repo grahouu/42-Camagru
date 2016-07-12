@@ -33,6 +33,7 @@ class homeController extends Controller{
             $return['pageMax'] = $count ? ceil($count/$size) : 1;
             $return['photos'] = $photosModel->paginate($args['page'], $size);
             $return['TotalPhotos'] = $count;
+            $return['idUser'] = $_SESSION["user"]["id"];
         }
 
         echo json_encode($return);

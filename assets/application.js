@@ -13,12 +13,14 @@ elemPaginate    = document.querySelector('#paginate'),
 ctx             = canvas.getContext('2d'),
 ctxPhotoTmp     = canvasPhotoTmp.getContext('2d'),
 vendorURL       = null,
-width           = 320,
+width           = 0,
 height          = 0,
 mask            = null,
 pageActual      = 1,
 maskpostion     = {'x': 0, y: 0, width: 50, height: 50},
-photo           = null;
+photo           = null,
+userId          = null;
+
 var elemPageActual = document.querySelector("#page-actual");
 var pageMax = document.querySelector("#page-max");
 
@@ -39,11 +41,15 @@ function addPhoto(photoInfo){
     var div = document.createElement('div');
     div.className = "icons";
 
-    var trash = document.createElement('img');
-    trash.src = "/camagru/assets/images/trash.png";
-    trash.className = "icons";
-    trash.setAttribute("onclick", "trash(this, "+ photoInfo.id +")");
-    div.appendChild(trash);
+    console.log(userId, photoInfo.idUser);
+
+    if (userId == photoInfo.idUser){
+        var trash = document.createElement('img');
+        trash.src = "/camagru/assets/images/trash.png";
+        trash.className = "icons";
+        trash.setAttribute("onclick", "trash(this, "+ photoInfo.id +")");
+        div.appendChild(trash);
+    }
 
     var like = document.createElement('img');
     like.src = "/camagru/assets/images/like.png";
@@ -88,6 +94,8 @@ navigator.getMedia(
             video.src = vendorURL.createObjectURL(stream);
         }
         video.play();
+        width = video.offsetWidth;
+        height = video.offsetHeight;
     },
     function(err) {
         console.log("An error occured! ", err);
@@ -130,6 +138,7 @@ function paginate(info) {
 
     elemPageActual.innerHTML = info.page;
     pageMax.innerHTML = info.pageMax;
+    userId = info.idUser;
 
     for (var i in info.photos){
         addPhoto(info.photos[i]);
@@ -181,8 +190,6 @@ function paginatePage(page) {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
             if (response.success){
-                console.log(response.photos.length);
-                //return;
                 if (response.TotalPhotos != '0' && !response.photos.length)
                     paginatePage(--pageActual);
                 else

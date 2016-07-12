@@ -6,7 +6,7 @@ class userController extends Controller{
 
         $msg = "";
 
-        if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["password"]) {
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["name"] && $_POST["password"]) {
 
             $usersModel = new usersModel($this->getService("connection")->getConnection());
 
@@ -35,13 +35,21 @@ class userController extends Controller{
 
     public function signup() {
 
+        $msg = "";
+
         if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["name"] && $_POST["password"]) {
             $usersModel = new usersModel($this->getService("connection")->getConnection());
-            if ($usersModel->create($_POST))
-                header('Location: signin');
+            $result = $usersModel->create($_POST);
+            $emailService = $this->getService("email");
+            if ($result["success"])
+                $msg = $emailService->sendUserToken($_POST["email"], $result["success"]);
+            else
+                $msg = $result["msg"];
         }
 
-        Parent::render("user/signup.php");
+        Parent::render("user/signup.php", array(
+            "msg" => $msg
+        ));
     }
 
     public function activate() {
@@ -94,6 +102,9 @@ class userController extends Controller{
     }
 
     public function recoverPassword (){
+        $email = "";
+        $msg = "";
+
         if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"]){
             $usersModel = new usersModel($this->getService("connection")->getConnection());
 
@@ -108,13 +119,18 @@ class userController extends Controller{
                 );
                 if ($userUpdate){
                     $emailService = $this->getService("email");
-                    $emailService->sendUserTokenPassword($_POST["email"], $token);
+                    $email = $emailService->sendUserTokenPassword($_POST["email"], $token);
                 }
+            }else {
+                $msg = "Cet email n'exist pas !";
             }
         }else{
             $msg = "veuillez enter votre email";
         }
-        Parent::render("user/recoverPassword.php");
+        Parent::render("user/recoverPassword.php", array(
+            "email" => $email,
+            "msg" => $msg
+        ));
     }
 
     public function logout() {
@@ -178,7 +194,9 @@ class userController extends Controller{
             $photosModel = new photosModel($this->getService("connection")->getConnection());
             $args = $this->getRoute()->getArguments();
             $photo = $photosModel->getById($args["id"]);
-            if ($photo && $photo["idUser"] == $_SESSION["user"]["id"] && unlink($photo["photo"])) {
+            if ($photo && $photo["idUser"] == $_SESSION["user"]["id"]) {
+                if (file_exists($photo["photo"]))
+                    unlink($photo["photo"]);
                 $success = $photosModel->deleteByIdPhoto($args["id"]);
             }
         }

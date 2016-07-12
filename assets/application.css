@@ -12,12 +12,12 @@ html, body {
 /*------------------------------------------ header --------------------------------------- */
 #header {
   width: 100%;
-  background-color: grey;
+  /*background-color: grey;*/
 }
 
 /*------------------------------------------ content --------------------------------------- */
 #content {
-  background-color: blue;
+  /*background-color: blue;*/
   width: auto;
   display: flex;
   flex-direction: row;
@@ -25,15 +25,29 @@ html, body {
 }
 /*------------------------------------------ footer --------------------------------------- */
 #footer {
-  background-color: green;
+  background-color: #292c2f;
+  text-align: center;
+  font: normal 18px sans-serif;
 }
 
 
 /*------------------------------------------ main --------------------------------------- */
 .main {
-  background-color: pink;
+  background-color: rgba(185, 185, 185, 0.62);;
   flex: 1;
 }
+
+.main canvas{
+    width: 100%;
+}
+
+#video {
+  border: 1px solid #ccc;
+  display: block;
+  margin: 0 0 20px 0;
+  width: 100%;
+}
+
 
 /*------------------------------------------ side --------------------------------------- */
 .side {
@@ -59,24 +73,6 @@ ul.images li {
   margin-bottom: 10px;
   border-bottom: black 1px solid;
 }
-
-/*.bottom {
-  margin:0 auto 0 auto;
-  text-align:center;
-}
-
-ul.images {
-  margin: 0;
-  padding: 0;
-  white-space: nowrap;
-  overflow-x: auto;
-  background-color: #ddd;
-}
-ul.images li {
-  display: inline;
-  width: 150px;
-  height: 150px;
-}*/
 
 img.mask,
 img.photo{
@@ -107,13 +103,6 @@ img.icons:hover{
 .selected{
   box-shadow:0px 12px 22px 1px #333;
 }
-
-#video {
-  border: 1px solid #ccc;
-  display: block;
-  margin: 0 0 20px 0;
-}
-
 
 /* The Modal (background) */
 .modal {
@@ -151,4 +140,25 @@ img.icons:hover{
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.signin a {
+    color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+    display: block;
+}
+
+.form-signin input {
+    margin-top: 5px;
+}
+
+.signin {
+    flex:3;
+    text-align: center;
+}
+
+.signin * {
+    width: 100%;
+    padding-top: 5px;
 }

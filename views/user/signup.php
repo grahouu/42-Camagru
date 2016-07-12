@@ -2,16 +2,18 @@
 <form method="POST">
 
     <label for="prenom">Nom : </label><br/>
-    <input type="text" name="name"/><br/>
-    <div class="error"><?php if(isset($error_prenom)){ echo $error_prenom; } ?></div>
+    <input type="text" name="name" pattern=".{4,}"  required/><br/>
 
     <label for="email">Email : </label><br/>
-    <input type="text" name="email"/><br/>
-    <div class="error"><?php if(isset($error_email)){ echo $error_email; } ?></div>
+    <input type="email" name="email" required/><br/>
 
     <label for="password">Password : </label><br/>
-    <input type="password" name="password" value=""/><br/><br/>
+    <input type="password" name="password" value="" required/><br/><br/>
 
     <input type="submit" value="S'inscrire"/>
 
 </form><br/>
+
+<?php
+    echo "<span id='info'>" . $msg . "</span>";
+?>
