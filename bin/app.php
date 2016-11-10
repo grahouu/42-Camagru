@@ -75,10 +75,12 @@ class App {
     }
 
     function run() {
+        //var_dump($_SERVER);
+        //exit();
         if ($this->runService() && $this->runRoute())
             call_user_func(array($this->controller, $this->action));
         else
-            header('Location: signin');
+            header('Location: /camagru/index.php/signin');
     }
 
 }

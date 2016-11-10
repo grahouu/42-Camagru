@@ -4,6 +4,6 @@
         "hostname": "localhost",
         "dbname": "camagru",
         "username": "root",
-        "password": "root"
+        "password": "admin"
     }
 }

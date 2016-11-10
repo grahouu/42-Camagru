@@ -3,67 +3,58 @@
         "name": "home",
         "controller": "home",
         "action": "index",
-        "auth": true,
-        "redirect": "home2"
+        "auth": true
     },
     {
         "name": "signin",
         "controller": "user",
         "action": "index",
-        "auth": false,
-        "redirect": "home2"
+        "auth": false
     },
     {
         "name": "logout",
         "controller": "user",
         "action": "logout",
-        "auth": true,
-        "redirect": "home2"
+        "auth": true
     },
     {
         "name": "signup",
         "controller": "user",
         "action": "signup",
         "auth": false,
-        "redirect": "home2",
         "layout": false
     },
     {
         "name": "activate",
         "controller": "user",
         "action": "activate",
-        "auth": false,
-        "redirect": "home2"
+        "auth": false
     },
     {
         "name": "recoverPassword",
         "controller": "user",
         "action": "recoverPassword",
         "auth": false,
-        "redirect": "home2",
         "layout": false
     },
     {
         "name": "changePassword",
         "controller": "user",
         "action": "changePassword",
-        "auth": false,
-        "redirect": "home2"
+        "auth": false
     },
     {
         "name": "generateImage",
         "controller": "user",
         "action": "generateImage",
         "auth": true,
-        "redirect": "home2",
         "layout": false
     },
     {
-        "name": "photo/:id([0-9]+)",
+        "name": "photo/:id([0-9]+)/:token([a-z0-9]+)",
         "controller": "user",
         "action": "deletePhoto",
         "auth": true,
-        "redirect": "home2",
         "layout": false
     },
     {
@@ -71,7 +62,6 @@
         "controller": "user",
         "action": "likePhoto",
         "auth": true,
-        "redirect": "home2",
         "layout": false
     },
     {
@@ -79,7 +69,6 @@
         "controller": "user",
         "action": "commentPhoto",
         "auth": true,
-        "redirect": "home2",
         "layout": false
     },
     {
@@ -87,7 +76,6 @@
         "controller": "home",
         "action": "paginate",
         "auth": true,
-        "redirect": "home2",
         "layout": false
     }
 ]

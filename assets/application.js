@@ -19,6 +19,7 @@ mask            = null,
 pageActual      = 1,
 maskpostion     = {'x': 0, y: 0, width: 50, height: 50},
 photo           = null,
+userToken       = null,
 userId          = null;
 
 var elemPageActual = document.querySelector("#page-actual");
@@ -40,8 +41,6 @@ function addPhoto(photoInfo){
 
     var div = document.createElement('div');
     div.className = "icons";
-
-    console.log(userId, photoInfo.idUser);
 
     if (userId == photoInfo.idUser){
         var trash = document.createElement('img');
@@ -86,7 +85,6 @@ navigator.getMedia(
         audio: false
     },
     function(stream) {
-        console.log("no error");
         if (navigator.mozGetUserMedia) {
             video.mozSrcObject = stream;
         } else {
@@ -139,6 +137,7 @@ function paginate(info) {
     elemPageActual.innerHTML = info.page;
     pageMax.innerHTML = info.pageMax;
     userId = info.idUser;
+    userToken = info.tokenUser;
 
     for (var i in info.photos){
         addPhoto(info.photos[i]);
@@ -204,8 +203,11 @@ paginatePage(1);
 
 //** TRASH FUNCTION **
 function trash(element, id){
+    console.log();
+    var url = 'photo/' + id + '/' + userToken;
+    console.log(url);
     var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', 'photo/' + id);
+    xhr.open('DELETE', url);
     xhr.onload = function() {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
@@ -250,7 +252,6 @@ function comment(element, id){
         var cell2 = row.insertCell(1);
         cell1.innerHTML = user;
         cell2.innerHTML = comment;
-        console.log(table.rows.length);
     }
 
     modal.style.display = "block";

@@ -34,6 +34,7 @@ class homeController extends Controller{
             $return['photos'] = $photosModel->paginate($args['page'], $size);
             $return['TotalPhotos'] = $count;
             $return['idUser'] = $_SESSION["user"]["id"];
+            $return['tokenUser'] = $_SESSION["token"];
         }
 
         echo json_encode($return);

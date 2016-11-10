@@ -11,11 +11,13 @@ class userController extends Controller{
             $usersModel = new usersModel($this->getService("connection")->getConnection());
 
             $_POST["password"] = sha1($_POST['password']);
+            $_POST["name"] = addslashes($_POST["name"]);
             $user = $usersModel->exist($_POST);
 
             if ($user){
                 if ($user['active']) {
                     $_SESSION["user"] = $user;
+                    $_SESSION["token"] = md5(time() * rand(1, 255));
                     header('Location: home');
                 }else{
                     $msg = "L'utilisateur n'est pas activé";
@@ -34,10 +36,11 @@ class userController extends Controller{
     }
 
     public function signup() {
-
         $msg = "";
 
         if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["name"] && $_POST["password"]) {
+            $_POST["name"] = addslashes($_POST["name"]);
+            $_POST["email"] = addslashes($_POST["email"]);
             $usersModel = new usersModel($this->getService("connection")->getConnection());
             $result = $usersModel->create($_POST);
             $emailService = $this->getService("email");
@@ -153,7 +156,7 @@ class userController extends Controller{
     	$file = UPLOAD_DIR . uniqid() . '.png';
     	$success = file_put_contents($file, $data);
 
-        if ($success && $datas['filter']) {
+        if ($data && $success && $datas['filter']) {
 
             //Recuperation du mask et de la photo
             $image = imagecreatefrompng($file);
@@ -194,7 +197,7 @@ class userController extends Controller{
             $photosModel = new photosModel($this->getService("connection")->getConnection());
             $args = $this->getRoute()->getArguments();
             $photo = $photosModel->getById($args["id"]);
-            if ($photo && $photo["idUser"] == $_SESSION["user"]["id"]) {
+            if ($photo && $photo["idUser"] == $_SESSION["user"]["id"] && $_SESSION["token"] == $args["token"]) {
                 if (file_exists($photo["photo"]))
                     unlink($photo["photo"]);
                 $success = $photosModel->deleteByIdPhoto($args["id"]);
@@ -227,6 +230,10 @@ class userController extends Controller{
         $response = array('success' => false);
 
         if ($_SERVER['REQUEST_METHOD'] == "POST"){
+            //SECURITE - enleve les balises html
+            $_POST['comment'] = htmlentities($_POST['comment']);
+            $_POST['comment'] = strip_tags($_POST['comment']);
+
             if ($commentsModel->create($_SESSION["user"]["id"], $args["id"], $_POST['comment'])){
                 $photo = $photosModel->getById($args["id"], true);
                 $emailService->sendUserNewComment($photo['email'], $_SESSION['user']['email'], $_POST['comment']);
