@@ -1,9 +1,9 @@
 {
     "db_driver": "mysql",
-    "db_host": "localhost",
+    "db_host": "127.0.0.1",
     "db_name": "camagru",
     "db_user": "root",
-    "db_password": "admin",
+    "db_password": "root",
     "db_table": [
         {
             "name": "user",
@@ -46,7 +46,7 @@
             ],
             "insert": [
                 "INSERT INTO camagru.user (name,email,password,token,tokenPassword,active) VALUES (",
-                "'Alexis Collin','asmalexis@hotmail.fr','37ac5e111a9b2f779e373f78efa4f7678b93feb1','3a901dececf0b6637bd5efafb09b14ff5f11d3a1', NULL, 1",
+                "'admin','asmalexis@hotmail.fr','d033e22ae348aeb5660fc2140aec35850c4da997','3a901dececf0b6637bd5efafb09b14ff5f11d3a1', NULL, 1",
                 ")"
             ]
         },

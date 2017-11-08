@@ -12,7 +12,8 @@ html, body {
 /*------------------------------------------ header --------------------------------------- */
 #header {
   width: 100%;
-  /*background-color: grey;*/
+  background-color: #826d6d;
+  text-align: right;
 }
 
 /*------------------------------------------ content --------------------------------------- */
@@ -161,4 +162,26 @@ img.icons:hover{
 .signin * {
     width: 100%;
     padding-top: 5px;
+}
+
+#button-position {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    #content {
+      display: inline-block;
+      width: auto;
+      height: 100%;
+    }
+    #button-position {
+      display: block;
+    }
+    .main {
+      background-color: rgba(185, 185, 185, 0.62);
+      display: inline-block;
+    }
+    .side {
+      display: inline-block;
+    }
 }

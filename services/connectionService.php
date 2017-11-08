@@ -11,8 +11,12 @@ class connectionService extends Service {
         $password = isset($config['password']) ? $config['password'] : 'root';
         $dbname = isset($config['dbname']) ? $config['dbname'] : $username;
 
-        //echo "$driver:host=$hostname;dbname=$dbname", " ", $username, " ", $password, "\n";
-        $this->connection = new PDO("$driver:host=$hostname;dbname=$dbname", $username, $password);
+        try {
+            $this->connection = new PDO("$driver:host=$hostname;dbname=$dbname", $username, $password);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo 'Échec lors de la connexion : ' . $e->getMessage();
+        }
     }
 
     function getConnection() {

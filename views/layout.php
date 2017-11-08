@@ -11,10 +11,10 @@
         <?php if (isset($_SESSION["user"])) { ?>
 
             <div id="header" >
-                <a href="logout"> Deconnexion </a>
                 <?php
                     echo $_SESSION["user"]["name"] . " - " . $_SESSION["user"]["email"]
                 ?>
+                <a href="logout"> Deconnexion </a>
             </div>
 
         <?php } ?>

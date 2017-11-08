@@ -5,13 +5,20 @@
   <canvas id="canvas"></canvas>
   <canvas id='photo-tmp' style="display:none;"></canvas>
 
+  <div id="button-position">
+    <button type="" onclick="calquePosition('Up')">Up</button>
+    <button type="" onclick="calquePosition('Down')">Down</button>
+    <button type="" onclick="calquePosition('Right')">Right</button>
+    <button type="" onclick="calquePosition('Left')">Left</button>
+    <button type="" onclick="calquePosition('+')">Zoom +</button>
+    <button type="" onclick="calquePosition('-')">Zoom -</button>
+  </div>
+
   <form id="file-form" action="handler.php" method="POST">
     <input type="file" id="file-select" name="photo"/>
   </form>
 
 </br>
-<button style="display: none;" type="button" id="generate" onclick="sendPhoto()">GENERATE !</button>
-
 <button style="display: none;" type="button" id="generate" onclick="sendPhoto()">GENERATE !</button>
 
 </div>

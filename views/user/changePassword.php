@@ -5,8 +5,3 @@
     <input type="password" name="password2" placeholder="confirmation">
     <input type="submit" value="valider">
 </form>
-
-<?php
-
-echo $email;
-echo $token;

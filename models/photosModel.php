@@ -54,7 +54,7 @@ class photosModel extends Models {
 
     function getById($id, $user = false) {
         if ($user)
-            $sql = 'SELECT photo.*, user.id, user.email FROM photo INNER JOIN user ON photo.idUser = user.id WHERE id = ' . $id;
+            $sql = 'SELECT photo.*, user.id, user.email FROM photo INNER JOIN user ON photo.idUser = user.id WHERE photo.id = ' . $id;
         else
             $sql = 'SELECT * FROM photo WHERE id = ' . $id;
 

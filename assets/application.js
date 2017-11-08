@@ -21,6 +21,7 @@ maskpostion     = {'x': 0, y: 0, width: 50, height: 50},
 photo           = null,
 userToken       = null,
 userId          = null;
+presskey        = {"w": false, "h": false};
 
 var elemPageActual = document.querySelector("#page-actual");
 var pageMax = document.querySelector("#page-max");
@@ -329,24 +330,36 @@ function render(){
 
 window.addEventListener("keydown", function (event) {
     var handled = false;
-    var keys = ["Left", "Right", "Up", "Down", "U+002D", "U+002B"];
+    var keys = ["Left", "Right", "Up", "Down", "+", "-", "h", "w"];
+    var keysPressed = event.key.replace("Arrow", "");
 
-    if (event.keyIdentifier !== undefined && keys.indexOf(event.keyIdentifier) > -1) {
+    if (event.key == "h" || event.key == "w")
+        presskey[event.key] = true;
+
+    if (keys.indexOf(keysPressed) > -1) {
         handled = true;
-        if (event.keyIdentifier == "Left")
+        if (keysPressed == "Left")
             maskpostion.x--;
-        else if (event.keyIdentifier == "Right")
+        else if (keysPressed == "Right")
             maskpostion.x++;
-        else if (event.keyIdentifier == "Up")
+        else if (keysPressed == "Up")
             maskpostion.y--;
-        else if (event.keyIdentifier == "Down")
+        else if (keysPressed == "Down")
             maskpostion.y++;
-        else if (event.keyIdentifier == "U+002D"){
+        else if (presskey['h'] && keysPressed == "+"){
+            maskpostion.height++;
+        }else if (presskey['h'] && keysPressed == "-"){
             maskpostion.height--;
+        }else if (presskey['w'] && keysPressed == "+"){
+            maskpostion.width++;
+        }else if (presskey['w'] && keysPressed == "-"){
             maskpostion.width--;
-        }else if (event.keyIdentifier == "U+002B"){
+        }else if (keysPressed == "+"){
             maskpostion.height++;
             maskpostion.width++;
+        }else if (keysPressed == "-"){
+            maskpostion.height--;
+            maskpostion.width--;
         }
     }
     if (handled) {
@@ -354,6 +367,35 @@ window.addEventListener("keydown", function (event) {
         render();
     }
 }, true);
+
+window.addEventListener("keyup", function (event) {
+    var handled = false;
+    if (event.key == "h" || event.key == "w")
+        presskey[event.key] = false;
+}, true);
+
+function calquePosition(keysPressed){
+    var keys = ["Left", "Right", "Up", "Down", "+", "-"];
+    if (keys.indexOf(keysPressed) > -1) {
+        handled = true;
+        if (keysPressed == "Left")
+            maskpostion.x--;
+        else if (keysPressed == "Right")
+            maskpostion.x++;
+        else if (keysPressed == "Up")
+            maskpostion.y--;
+        else if (keysPressed == "Down")
+            maskpostion.y++;
+        else if (keysPressed == "-"){
+            maskpostion.height--;
+            maskpostion.width--;
+        }else if (keysPressed == "+"){
+            maskpostion.height++;
+            maskpostion.width++;
+        }
+        render();
+    }
+}
 
 //** MASK SELECTION FUNCTION **
 imageSelector.onclick = function(event) {
