@@ -1,6 +1,6 @@
 Inti:
 
-Run script confiig/setup.php for db initilize.
+Run script config/setup.php for db initilize.
 
 run server apache and lunch inde.php
 

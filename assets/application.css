@@ -16,6 +16,15 @@ html, body {
   text-align: right;
 }
 
+.header .pure-menu {
+  border-bottom-color: black;
+  border-radius: 0;
+}
+
+.home-menu ul {
+  float: right;
+}
+
 /*------------------------------------------ content --------------------------------------- */
 #content {
   /*background-color: blue;*/
@@ -25,12 +34,18 @@ html, body {
   height: 100%;
 }
 /*------------------------------------------ footer --------------------------------------- */
-#footer {
+.footer {
+  background: #111;
+  color: #666;
+  text-align: center;
+  padding: 1em;
+  font-size: 80%;
+}
+/* #footer {
   background-color: #292c2f;
   text-align: center;
   font: normal 18px sans-serif;
-}
-
+} */
 
 /*------------------------------------------ main --------------------------------------- */
 .main {

@@ -29,7 +29,7 @@ class userController extends Controller{
             header('Location: home');
         }
 
-        $this->title = 'okok';
+        $this->title = 'signin';
         Parent::render("user/signin.php", array(
             "msg" => $msg
         ));
