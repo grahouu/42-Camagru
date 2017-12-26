@@ -35,7 +35,8 @@
         </div>
     </div>
 
-    <div class="pure-g">
+    <div>
+        <?php echo $this->content ?>
     </div>
     <!-- <nav class="light-blue lighten-1" role="navigation">
         <div class="nav-wrapper container">
@@ -63,7 +64,7 @@
             <div class="row">
                 <div class="col s12 m4"> </div>
                 <div class="col s12 m4">
-                    <?php echo $this->content ?>
+                    
                 </div>
                 <div class="col s12 m4"> </div>
             </div>
