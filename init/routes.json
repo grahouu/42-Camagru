@@ -1,9 +1,9 @@
 [
     {
-        "name": "home",
+        "name": "",
         "controller": "home",
-        "action": "index",
-        "auth": true
+        "action": "galery",
+        "auth": false
     },
     {
         "name": "signin",

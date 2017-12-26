@@ -2,6 +2,15 @@
 
 class homeController extends Controller{
 
+    public function galery(){
+        $photosModel = new photosModel($this->getService("connection")->getConnection());
+        $photos = $photosModel->getAll();
+        $this->title = 'Galery';
+        Parent::render("galery.php", array(
+            "photos" => $photos,
+        ));
+    }
+
     public function index() {
         //$con = $this->getService("connection");
 

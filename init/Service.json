@@ -1,9 +1,9 @@
 {
     "connection": {
         "driver": "mysql",
-        "hostname": "localhost",
+        "hostname": "127.0.0.1",
         "dbname": "camagru",
         "username": "root",
-        "password": "root"
+        "password": "password"
     }
 }

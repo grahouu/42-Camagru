@@ -1,9 +1,10 @@
 {
     "db_driver": "mysql",
     "db_host": "127.0.0.1",
+    "db_port": "3306",
     "db_name": "camagru",
     "db_user": "root",
-    "db_password": "root",
+    "db_password": "password",
     "db_table": [
         {
             "name": "user",

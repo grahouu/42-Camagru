@@ -5,10 +5,7 @@ include "database.php";
 $initDb = file_get_contents("db.json");
 $initDb = json_decode($initDb);
 
-// print_r($initDb);
-// exit();
-
-$dsn = $initDb->db_driver. ":host=" .$initDb->db_host. ";port=8889;dbname=" .$initDb->db_name;
+$dsn = $initDb->db_driver. ":host=" .$initDb->db_host. ";port=" .$initDb->db_port. ";";
 
 print($dsn);
 

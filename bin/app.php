@@ -80,7 +80,7 @@ class App {
         if ($this->runService() && $this->runRoute())
             call_user_func(array($this->controller, $this->action));
         else
-            header('Location: /camagru/signin');
+            header('Location: /camagru/home');
     }
 
 }
