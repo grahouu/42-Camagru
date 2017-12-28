@@ -27,7 +27,7 @@
   <ul id="image-selector" class="images">
     <?php
     foreach ($masks as $mask) {
-      echo "<li> <img src='/camagru/assets/mask/".$mask."' id='".$mask."' alt='photo' class='mask'> </li>";
+      echo "<li> <img src='assets/mask/".$mask."' id='".$mask."' alt='photo' class='mask'> </li>";
     }
 
     ?>
@@ -65,5 +65,5 @@
 
 </div>
 
-<script src="../assets/application.js"></script>
-<script src="../assets/camera.js"></script>
+<script src="assets/application.js"></script>
+<script src="assets/camera.js"></script>

@@ -25,6 +25,12 @@
         "layout": false
     },
     {
+        "name": "profile",
+        "controller": "user",
+        "action": "profile",
+        "auth": true
+    },
+    {
         "name": "activate",
         "controller": "user",
         "action": "activate",
@@ -75,7 +81,7 @@
         "name": "photo/paginate/:page([0-9]+)",
         "controller": "home",
         "action": "paginate",
-        "auth": true,
+        "auth": false,
         "layout": false
     }
 ]

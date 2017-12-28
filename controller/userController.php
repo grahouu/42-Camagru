@@ -141,6 +141,18 @@ class userController extends Controller{
         header('Location: signin');
     }
 
+    public function profile(){
+        $directory = "assets/mask";
+        $masks = array_diff(scandir($directory), array('..', '.'));
+        $photosModel = new photosModel($this->getService("connection")->getConnection());
+        $photos = $photosModel->getByUser($_SESSION["user"]["id"]);
+        $this->title = 'Profile';
+        Parent::render("user/profile.php", array(
+            "masks" => $masks,
+            "photos" => $photos
+        ));
+    }
+
     public function generateImage() {
         header('Content-Type: application/json');
 

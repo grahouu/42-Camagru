@@ -16,26 +16,26 @@
 <body>
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal">
-            <a class="pure-menu-heading" href="">Photo Gallery</a>
+            <a class="pure-menu-heading" href="/">Photo Gallery</a>
 
             <ul class="pure-menu-list">
                 <?php if (isset($_SESSION["user"])) { ?>
-                    <li>
-                        <?php echo $_SESSION["user"]["name"] . " - " . $_SESSION["user"]["email"] ?>
+                    <li class="pure-menu-item">
+                        <?php echo "<a href='profile'>". $_SESSION["user"]["name"] . " </a> - " . $_SESSION["user"]["email"] ?>
                     </li>
                     <li class="pure-menu-item">
-                        <a href="logout" class="pure-menu-link">About</a>
+                        <a href="logout" class="pure-menu-link">Logout</a>
                     </li>
                 <?php }else{ ?>
                     <li class="pure-menu-item">
-                        <a href="signin" class="pure-menu-link">Connexion</a>
+                        <a href="signin" class="pure-menu-link">Login</a>
                     </li>
                 <?php } ?>
             </ul>
         </div>
     </div>
 
-    <div>
+    <div id="container">
         <?php echo $this->content ?>
     </div>
     <!-- <nav class="light-blue lighten-1" role="navigation">

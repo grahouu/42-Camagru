@@ -31,7 +31,7 @@ class homeController extends Controller{
 
     public function paginate() {
         $args = $this->getRoute()->getArguments();
-        $size = 2;
+        $size = 6;
         $return = array("success" => false);
 
         if ($_SERVER['REQUEST_METHOD'] == "GET" && $args['page']){

@@ -1,4 +1,4 @@
-<div class="pure-g">
+<div class="pure-g galery-container">
     <div class="photo-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-3">
         <a href="http://www.dillonmcintosh.tumblr.com/">
             <img src="http://24.media.tumblr.com/d6b9403c704c3e5aa1725c106e8a9430/tumblr_mvyxd9PUpZ1st5lhmo1_1280.jpg"
@@ -74,4 +74,12 @@
             </span>
         </aside>
     </div>
+
+    <div class="pure-u-1">
+            <div class="l-box paginate">
+                prev 1/4 next
+            </div>
+        </div>
 </div>
+
+<script src="assets/galery.js"></script>

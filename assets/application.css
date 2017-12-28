@@ -5,9 +5,9 @@ html, body {
 }
 
 #container {
-  height: 95%;
   width: 100%;
 }
+
 
 /*------------------------------------------ header --------------------------------------- */
 #header {
@@ -53,18 +53,27 @@ html, body {
   flex: 1;
 }
 
-.main canvas{
+#canvas{
     width: 100%;
 }
 
-#video {
-  border: 1px solid #ccc;
-  display: block;
-  margin: 0 0 20px 0;
-  width: 100%;
+#video { 
+  right: 0; 
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+  width: auto; 
+  height: auto; 
+  z-index: -100;
+}
+
+.paginate {
+  text-align: center;
 }
 
 /*------------------------------------------ Galery --------------------------------------- */
+
+
 
 .photo-box, .text-box {
   overflow: hidden;
@@ -164,11 +173,32 @@ html, body {
   }
 }
 
-
-/*------------------------------------------ side --------------------------------------- */
-.side {
+/*------------------------------------ mask --------------------------------- */
+.mask-container {
   background-color: red;
-  flex: 1;
+  overflow: auto;
+  white-space: nowrap;
+  height: 100px;
+}
+
+.mask-container .mask{
+    display: inline-block;
+    color: white;
+    text-align: center;
+    margin-right: 10px;
+    text-decoration: none;
+    height: 100%;
+}
+
+.mask.selected{
+  box-shadow:0px 12px 22px 1px #333;
+}
+
+/*------------------------------------ profile photos --------------------------------- */
+
+.photos-container {
+  overflow-y: scroll;
+  height: 99%;
 }
 
 ul.photos,
@@ -190,7 +220,6 @@ ul.images li {
   border-bottom: black 1px solid;
 }
 
-img.mask,
 img.photo{
   position: relative;
   top: 0;
@@ -216,9 +245,6 @@ img.icons:hover{
   border-bottom: black 3px solid;
 }
 
-.selected{
-  box-shadow:0px 12px 22px 1px #333;
-}
 
 /* The Modal (background) */
 .modal {
@@ -256,6 +282,10 @@ img.icons:hover{
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.pure-form-stacked fieldset {
+  text-align: center;
 }
 
 .signin a {
