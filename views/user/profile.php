@@ -1,3 +1,4 @@
+<span id="token" style="visibility: hidden;"><?php echo $tokenUser ?></span> 
 <div class="pure-g">
     <div class="pure-u-3-5">
         <div class="pure-g">
@@ -35,12 +36,46 @@
         <div class="photos-container">
             <?php
                 foreach ($photos as $photo) {
-                    echo "<img src='".$photo['photo']."' id='".$photo['id']."' alt='photo' class='mask'>";
+                    echo "<div class='photo-box'>";
+                    echo "<a> <img src='".$photo['photo']."' id='".$photo['id']."' alt='photo'> </a>";
+                    echo "<aside class='photo-box-caption'>";
+                    echo "<span> <img src='http://www.free-icons-download.net/images/trash-can-symbol-icon-504.png' class='icons-trash' onclick='trash(this, ".$photo['id'].")'> </span>";
+                    echo "</aside>";
+                    echo "</div>";
                 }
             ?>
         </div>
     </div>
 </div>
+
+<form class="pure-form pure-form-aligned" method="post">
+    <fieldset>
+        <div class="pure-control-group">
+            <label for="name">Username</label>
+            <input id="name" name="name" pattern=".{4,}" type="text" placeholder="Username">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Password"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+        </div>
+
+        <div class="pure-control-group">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" placeholder="Email Address">
+        </div>
+
+        <div class="pure-controls">
+            <label for="cb" class="pure-checkbox">
+                <input id="notif" name="notif" type="checkbox" value="true">  Notifications
+            </label>
+
+            <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </div>
+    </fieldset>
+</form>
 
 
 

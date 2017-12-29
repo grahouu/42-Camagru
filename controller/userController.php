@@ -38,7 +38,7 @@ class userController extends Controller{
     public function signup() {
         $msg = "";
 
-        if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["name"] && $_POST["password"]) {
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && $_POST["email"] && $_POST["name"] && $_POST["password"] && preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/', $_POST["password"]) ) {
             $_POST["name"] = addslashes($_POST["name"]);
             $_POST["email"] = addslashes($_POST["email"]);
             $usersModel = new usersModel($this->getService("connection")->getConnection());
@@ -79,7 +79,7 @@ class userController extends Controller{
     }
 
     public function changePassword (){
-        if ($_SERVER['REQUEST_METHOD'] == "POST" && ($_POST["password"] == $_POST["password2"]) && $_POST["token"] && $_POST['email']) {
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && ($_POST["password"] == $_POST["password2"]) && preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/', $_POST["password"]) && $_POST["token"] && $_POST['email']) {
             $usersModel = new usersModel($this->getService("connection")->getConnection());
             $user = $usersModel->exist(array(
                 "tokenPassword" => $_POST["token"],
@@ -142,6 +142,26 @@ class userController extends Controller{
     }
 
     public function profile(){
+
+        if ($_SERVER['REQUEST_METHOD'] == "POST"){
+            var_dump($_POST);
+
+            $usersModel = new usersModel($this->getService("connection")->getConnection());
+            if ($_POST["email"] && filter_var($user['email'], FILTER_VALIDATE_EMAIL)){
+                $usersModel->update(["id" => $_SESSION["user"]["id"]], [ "email" => $_POST["email"]]);
+            }
+            if ($_POST["name"]){
+                $usersModel->update(["id" => $_SESSION["user"]["id"]], ["name" => $_POST["name"]]);
+            }
+            if ($_POST["password"] && preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/', $_POST["password"])){
+                $usersModel->updatePassword($_POST["password"]);
+            }
+            if ($_POST["notif"])
+                $usersModel->update(["id" => $_SESSION["user"]["id"]], ["notif" => 1]);
+            else
+                $usersModel->update(["id" => $_SESSION["user"]["id"]], ["notif" => 0]);
+        }
+
         $directory = "assets/mask";
         $masks = array_diff(scandir($directory), array('..', '.'));
         $photosModel = new photosModel($this->getService("connection")->getConnection());
@@ -149,7 +169,9 @@ class userController extends Controller{
         $this->title = 'Profile';
         Parent::render("user/profile.php", array(
             "masks" => $masks,
-            "photos" => $photos
+            "photos" => $photos,
+            'idUser' => $_SESSION["user"]["id"],
+            'tokenUser' => $_SESSION["token"]
         ));
     }
 
@@ -166,24 +188,26 @@ class userController extends Controller{
     	$img = str_replace(' ', '+', $img);
     	$data = base64_decode($img);
     	$file = UPLOAD_DIR . uniqid() . '.png';
-    	$success = file_put_contents($file, $data);
+        $success = file_put_contents($file, $data);
+        $datas['filters'] = json_decode($datas['filters']);
 
-        if ($data && $success && $datas['filter']) {
+        if ($data && $success && $datas['filters']) {
 
             //Recuperation du mask et de la photo
             $image = imagecreatefrompng($file);
-            $mask = imagecreatefrompng("assets/mask/" . $datas['filter']);
 
-            //Creation du nouveau mask
-            $newMask = imagecreatetruecolor($datas["filterWidth"], $datas["filterHeight"]);
-            imagealphablending($newMask, false);
-            imagesavealpha($newMask,true);
-            $transparent = imagecolorallocatealpha($newMask, 255, 255, 255, 127);
-            imagefilledrectangle($newMask, 0, 0, $datas["filterWidth"], $datas["filterHeight"], $transparent);
-            imagecopyresampled($newMask, $mask, 0, 0, 0, 0, $datas["filterWidth"], $datas["filterHeight"], imagesx($mask), imagesy($mask));
-
-            //Merge la photo avec le nouveau mask
-            imagecopy($image, $newMask, $datas["filterX"], $datas["filterY"], 0, 0, $datas["filterWidth"], $datas["filterHeight"]);
+            foreach ($datas['filters'] as $key => $mask) {
+                $img_mask = imagecreatefrompng("assets/mask/" . $mask->id);
+                $newMask = imagecreatetruecolor($mask->width, $mask->height);
+                imagealphablending($newMask, false);
+                imagesavealpha($newMask,true);
+                $transparent = imagecolorallocatealpha($newMask, 255, 255, 255, 127);
+                imagefilledrectangle($newMask, 0, 0, $mask->width, $mask->height, $transparent);
+                imagecopyresampled($newMask, $img_mask, 0, 0, 0, 0, $mask->width, $mask->height, imagesx($img_mask), imagesy($img_mask));
+                
+                // //Merge la photo avec le nouveau mask
+                imagecopy($image, $newMask, $mask->x, $mask->y, 0, 0, $mask->width, $mask->height);
+            }
 
             //sauvegarde de la nouvelle image
             imagepng($image, $file);
@@ -222,16 +246,24 @@ class userController extends Controller{
     public function likePhoto() {
         header('Content-Type: application/json');
         $success = false;
+        $type = null;
         $args = $this->getRoute()->getArguments();
 
         if ($_SERVER['REQUEST_METHOD'] == "GET" && $args["id"]){
             $photosModel = new photosModel($this->getService("connection")->getConnection());
 
             $photo = $photosModel->getById($args["id"]);
-            if ($photo)
-                $success = $photosModel->likeByIdPhoto($args["id"]);
+            if ($photo){
+                if ($photosModel->likedPhoto($args["id"])){
+                    $success = $photosModel->unlikePhoto($args["id"]);
+                    $type = "unlike";
+                }else{
+                    $success = $photosModel->likePhoto($args["id"]);
+                    $type = "like";
+                }
+            }
         }
-        echo json_encode(array('success' => $success));
+        echo json_encode(array('success' => $success, 'type' => $type));
     }
 
     public function commentPhoto() {
@@ -248,7 +280,8 @@ class userController extends Controller{
 
             if ($commentsModel->create($_SESSION["user"]["id"], $args["id"], $_POST['comment'])){
                 $photo = $photosModel->getById($args["id"], true);
-                $emailService->sendUserNewComment($photo['email'], $_SESSION['user']['email'], $_POST['comment']);
+                if ($photo["notif"])
+                    $emailService->sendUserNewComment($photo['email'], $_SESSION['user']['email'], $_POST['comment']);
                 $response["comment"] = $_POST['comment'];
                 $response["user"] = $_SESSION['user']['email'];
                 $response["success"] = true;

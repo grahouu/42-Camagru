@@ -23,7 +23,7 @@ class emailService extends Service {
         $sujet = 'Activation de votre compte';
         $body = '
         Bonjour, veuillez activer votre compte en cliquant ici ->
-        <a href="http://localhost/camagru/index.php/activate?token='. $token .'&email='. $email .'">Activation du compte</a>';
+        <a href="http://localhost:8080/camagru/activate?token='. $token .'&email='. $email .'">Activation du compte</a>';
 
         return $this->sendEmail($email, $sujet, $body);       
     }
@@ -32,7 +32,7 @@ class emailService extends Service {
         $sujet = 'Retrouver son mot de passe';
         $body = '
         Bonjour, veuillez reinitialiser votre mot de passe en cliquant ici ->
-        <a href="http://localhost/camagru/index.php/changePassword?token='.$token.'&email='.$email.'">Activation du compte</a>';
+        <a href="http://localhost:8080/camagru/changePassword?token='.$token.'&email='.$email.'">Activation du compte</a>';
 
         return $this->sendEmail($email, $sujet, $body);
     }

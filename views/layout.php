@@ -16,7 +16,7 @@
 <body>
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal">
-            <a class="pure-menu-heading" href="/">Photo Gallery</a>
+            <a class="pure-menu-heading" href=" ">Photo Gallery</a>
 
             <ul class="pure-menu-list">
                 <?php if (isset($_SESSION["user"])) { ?>
@@ -29,6 +29,9 @@
                 <?php }else{ ?>
                     <li class="pure-menu-item">
                         <a href="signin" class="pure-menu-link">Login</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="signup" class="pure-menu-link">Signup</a>
                     </li>
                 <?php } ?>
             </ul>

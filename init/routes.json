@@ -22,13 +22,14 @@
         "controller": "user",
         "action": "signup",
         "auth": false,
-        "layout": false
+        "layout": true
     },
     {
         "name": "profile",
         "controller": "user",
         "action": "profile",
-        "auth": true
+        "auth": true,
+        "redirect": "/signin"
     },
     {
         "name": "activate",
@@ -41,7 +42,7 @@
         "controller": "user",
         "action": "recoverPassword",
         "auth": false,
-        "layout": false
+        "layout": true
     },
     {
         "name": "changePassword",

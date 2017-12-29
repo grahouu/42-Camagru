@@ -54,7 +54,7 @@ class photosModel extends Models {
 
     function getById($id, $user = false) {
         if ($user)
-            $sql = 'SELECT photo.*, user.id, user.email FROM photo INNER JOIN user ON photo.idUser = user.id WHERE photo.id = ' . $id;
+            $sql = 'SELECT photo.*, user.id, user.email, user.notif FROM photo INNER JOIN user ON photo.idUser = user.id WHERE photo.id = ' . $id;
         else
             $sql = 'SELECT * FROM photo WHERE id = ' . $id;
 
@@ -84,8 +84,30 @@ class photosModel extends Models {
         return $result;
     }
 
-    function likeByIdPhoto($idPhoto) {
+    function likedPhoto($idPhoto) {
+        $sql = "SELECT * FROM likes WHERE idUser = :idUser and idPhoto = :idPhoto";
+        $req = $this->getConnection()->prepare($sql);
+        $res = $req->execute(array(
+            'idUser' => $_SESSION["user"]["id"],
+            'idPhoto' => $idPhoto
+        ));
+        if (!$req->rowCount())
+            return false;
+        else
+            return true;
+    }
+
+    public function likePhoto($idPhoto) {
         $sql = 'INSERT INTO likes (idUser, idPhoto) VALUES (:idUser, :idPhoto)';
+        $req = $this->getConnection()->prepare($sql);
+        return $req->execute(array(
+            'idUser' => $_SESSION["user"]["id"],
+            'idPhoto' => $idPhoto
+        ));
+    }
+
+    public function unlikePhoto($idPhoto){
+        $sql = "DELETE FROM likes WHERE idUser = :idUser AND idPhoto= :idPhoto";
         $req = $this->getConnection()->prepare($sql);
         return $req->execute(array(
             'idUser' => $_SESSION["user"]["id"],

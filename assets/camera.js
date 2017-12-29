@@ -12,8 +12,7 @@ ctxPhotoTmp     = canvasPhotoTmp.getContext('2d'),
 vendorURL       = null,
 width           = 0,
 height          = 0,
-mask            = null,
-maskpostion     = {'x': 0, y: 0, width: 50, height: 50},
+masks           = [],
 photo           = null,
 userToken       = null,
 userId          = null;
@@ -80,30 +79,40 @@ function render(){
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(canvasPhotoTmp, 0 , 0, width, height);
-    if (mask){
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(mask, maskpostion.x, maskpostion.y, maskpostion.width, maskpostion.height);
+    if (masks.length){
+        masks.forEach(element => {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.drawImage(element.mask, element.x, element.y, element.width, element.height); 
+        });
     }
 
-    if (pixel.data[0] && mask){
+    if (pixel.data[0] && masks.length){
         btnGenerate.style.display = "";
     }else{
         btnGenerate.style.display = "none";
     }
 }
 
+function maskSelected(mask){
+    for (const key in masks) {
+        if (masks[key].mask == mask)
+            return key;
+    }
+    return false;
+}
+
+
 // ----- MASK SELECTION -----
 maskContainer.onclick = function(event) {
     var target = getEventTarget(event);
-
-    if (mask)
-        mask.classList.remove("selected");
-
-    if (target == mask){
-        mask = null;
+    let selected = maskSelected(target);
+    console.log(selected)
+    if (selected){
+        masks[selected].mask.classList.remove("selected");
+        masks.splice(selected, 1);
     }else{
         target.classList.add("selected");
-        mask = target;
+        masks.push({ mask: target, id: target.id, x: 0, y: 0, width: 50, height: 50 });
     }
 
     render();
@@ -115,33 +124,36 @@ window.addEventListener("keydown", function (event) {
     var keys = ["Left", "Right", "Up", "Down", "+", "-", "h", "w"];
     var keysPressed = event.key.replace("Arrow", "");
 
+    let mask = masks[masks.length - 1];
+    console.log(mask)
+
     if (event.key == "h" || event.key == "w")
-        presskey[event.key] = true;
+        presskey[event.key] = !presskey[event.key];
 
     if (keys.indexOf(keysPressed) > -1) {
         handled = true;
         if (keysPressed == "Left")
-            maskpostion.x--;
+            mask.x--;
         else if (keysPressed == "Right")
-            maskpostion.x++;
+            mask.x++;
         else if (keysPressed == "Up")
-            maskpostion.y--;
+            mask.y--;
         else if (keysPressed == "Down")
-            maskpostion.y++;
+            mask.y++;
         else if (presskey['h'] && keysPressed == "+"){
-            maskpostion.height++;
+            mask.height++;
         }else if (presskey['h'] && keysPressed == "-"){
-            maskpostion.height--;
+            mask.height--;
         }else if (presskey['w'] && keysPressed == "+"){
-            maskpostion.width++;
+            mask.width++;
         }else if (presskey['w'] && keysPressed == "-"){
-            maskpostion.width--;
+            mask.width--;
         }else if (keysPressed == "+"){
-            maskpostion.height++;
-            maskpostion.width++;
+            mask.height++;
+            mask.width++;
         }else if (keysPressed == "-"){
-            maskpostion.height--;
-            maskpostion.width--;
+            mask.height--;
+            mask.width--;
         }
     }
     if (handled) {
@@ -173,23 +185,39 @@ function sendPhoto() {
     var formData = new FormData();
     var image = canvasPhotoTmp.toDataURL('image/png');
 
-    if (mask && image){
+    if (masks.length && image){
         formData.append('photo', image);
-        formData.append('filter', mask.id);
-        formData.append('filterX', maskpostion.x);
-        formData.append('filterY', maskpostion.y);
-        formData.append('filterWidth', maskpostion.width);
-        formData.append('filterHeight', maskpostion.height);
+        formData.append('filters', JSON.stringify(masks) );
 
         xhr.open('POST', 'generateImage', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 var photoInfo = JSON.parse(xhr.responseText);
                 if (photoInfo.success){
-                    // paginatePage(pageActual);
+                    let photo = document.createElement('img');
+                    photo.src = photoInfo.file;
+                    photo.id = photoInfo.id;
+                    let listPhotos  = document.querySelector('.photos-container');
+                    listPhotos.appendChild(photo); 
                 }
             }
         };
         xhr.send(formData);
     }
+}
+
+// ----- TRASH FUNCTION -----
+function trash(element, id){
+    var url = 'photo/' + id + '/' + document.getElementById("token").innerHTML;;
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', url);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.success){
+                // paginatePage(pageActual);
+            }
+        }
+    };
+    xhr.send();
 }

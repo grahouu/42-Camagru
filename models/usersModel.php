@@ -20,14 +20,18 @@ class usersModel extends Models {
                 'token'=>$token
             );
 
-            $sql = 'INSERT INTO user (name, email, password, token) VALUES (:name, :email, :password, :token)';
-            $req = $this->getConnection()->prepare($sql);
-            if ($req->execute($q)){
-                $msg = "Votre compte a bien ete cree";
-                $success = $token;
+            if ($this->exist(array("name" => $name)) == 0){
+                $sql = 'INSERT INTO user (name, email, password, token) VALUES (:name, :email, :password, :token)';
+                $req = $this->getConnection()->prepare($sql);
+                if ($req->execute($q)){
+                    $msg = "Votre compte a bien ete cree";
+                    $success = $token;
 
-            }else
-                $msg = $req->errorInfo();
+                }else
+                    $msg = $req->errorInfo();
+            }else{
+                $msg .= 'Login exist';
+            }
         }else{
             if(!empty($user) && strlen($user['name'])<4)
                 $msg .= ' Votre prenom doit comporter au minimun 4 caracteres !';
@@ -36,6 +40,12 @@ class usersModel extends Models {
         }
 
         return array("success" => $success, "msg" => $msg);
+    }
+
+    function updatePassword($newPass) {
+        $password = sha1($newPass);
+        $sql = "UPDATE user SET password=". $password ." WHERE id=". $_SESSION['user']['id'];
+        return $this->getConnection()->exec($sql);
     }
 
     function update($filters, $values) {
@@ -60,8 +70,15 @@ class usersModel extends Models {
             $i++;
         }
 
+        var_dump($filters, $values);
+
         $req = $this->getConnection()->prepare($sql);
-        return $req->execute(array_merge($filters, $values));
+        try {
+            return $req->execute(array_merge($filters, $values));
+        } catch (PDOException $e){
+            return 0;
+        }
+        
     }
 
     public function exist($array){

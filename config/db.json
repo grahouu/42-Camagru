@@ -25,6 +25,11 @@
                     "parameters": ["NOT NULL"]
                 },
                 {
+                    "name": "notif",
+                    "type": "boolean",
+                    "parameters": ["NOT NULL", "DEFAULT true"]
+                },
+                {
                     "name": "token",
                     "type": "varchar(255)",
                     "parameters": ["NOT NULL", "UNIQUE"]

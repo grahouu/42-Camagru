@@ -332,6 +332,7 @@ window.addEventListener("keydown", function (event) {
     var handled = false;
     var keys = ["Left", "Right", "Up", "Down", "+", "-", "h", "w"];
     var keysPressed = event.key.replace("Arrow", "");
+    let mask = masks.shift();
 
     if (event.key == "h" || event.key == "w")
         presskey[event.key] = true;
@@ -339,27 +340,27 @@ window.addEventListener("keydown", function (event) {
     if (keys.indexOf(keysPressed) > -1) {
         handled = true;
         if (keysPressed == "Left")
-            maskpostion.x--;
+            mask.x--;
         else if (keysPressed == "Right")
-            maskpostion.x++;
+            mask.x++;
         else if (keysPressed == "Up")
-            maskpostion.y--;
+            mask.y--;
         else if (keysPressed == "Down")
-            maskpostion.y++;
+            mask.y++;
         else if (presskey['h'] && keysPressed == "+"){
-            maskpostion.height++;
+            mask.height++;
         }else if (presskey['h'] && keysPressed == "-"){
-            maskpostion.height--;
+            mask.height--;
         }else if (presskey['w'] && keysPressed == "+"){
-            maskpostion.width++;
+            mask.width++;
         }else if (presskey['w'] && keysPressed == "-"){
-            maskpostion.width--;
+            mask.width--;
         }else if (keysPressed == "+"){
-            maskpostion.height++;
-            maskpostion.width++;
+            mask.height++;
+            mask.width++;
         }else if (keysPressed == "-"){
-            maskpostion.height--;
-            maskpostion.width--;
+            mask.height--;
+            mask.width--;
         }
     }
     if (handled) {

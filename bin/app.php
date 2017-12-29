@@ -8,6 +8,7 @@ class App {
     private $action;
     private $confService = [];
     private $services = [];
+    private $redirect = "";
 
 
     function __construct()
@@ -70,17 +71,17 @@ class App {
             $this->controller = new $controller($this);
             $this->action = $this->objRoute->getRoute("action");
             return true;
+        }else if($this->objRoute->urlExist() && isset($this->objRoute->jsonRoute["redirect"]) ){
+            $this->redirect = $this->objRoute->jsonRoute["redirect"];
         }
         return false;
     }
 
     function run() {
-        //var_dump($_SERVER);
-        //exit();
         if ($this->runService() && $this->runRoute())
             call_user_func(array($this->controller, $this->action));
         else
-            header('Location: /camagru');
+            header('Location: /camagru/' . $this->redirect);
     }
 
 }

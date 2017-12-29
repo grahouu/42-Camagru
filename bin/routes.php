@@ -7,7 +7,7 @@ class Routes
 {
 
     private $jsonRoutes = null;
-    private $jsonRoute = null;
+    public $jsonRoute = null;
     private $url;
     private $urlExist = false;
     private $urlAuth = false;
@@ -68,7 +68,7 @@ class Routes
         }
     }
 
-    private function urlExist() {
+    function urlExist() {
         foreach ($this->jsonRoutes as $route) {
             if ($this->urlCheckPattern($this->url, $route["name"])) {
                 $this->jsonRoute = $route;

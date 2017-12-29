@@ -31,7 +31,7 @@ class homeController extends Controller{
 
     public function paginate() {
         $args = $this->getRoute()->getArguments();
-        $size = 6;
+        $size = 8;
         $return = array("success" => false);
 
         if ($_SERVER['REQUEST_METHOD'] == "GET" && $args['page']){
@@ -42,8 +42,6 @@ class homeController extends Controller{
             $return['pageMax'] = $count ? ceil($count/$size) : 1;
             $return['photos'] = $photosModel->paginate($args['page'], $size);
             $return['TotalPhotos'] = $count;
-            $return['idUser'] = $_SESSION["user"]["id"];
-            $return['tokenUser'] = $_SESSION["token"];
         }
 
         echo json_encode($return);
