@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="assets/application.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <title>
         <?php echo $this->title ?>
     </title>
@@ -16,7 +17,7 @@
 <body>
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal">
-            <a class="pure-menu-heading" href=" ">Photo Gallery</a>
+            <a class="pure-menu-heading" href="home">Photo Gallery</a>
 
             <ul class="pure-menu-list">
                 <?php if (isset($_SESSION["user"])) { ?>
@@ -41,41 +42,9 @@
     <div id="container">
         <?php echo $this->content ?>
     </div>
-    <!-- <nav class="light-blue lighten-1" role="navigation">
-        <div class="nav-wrapper container">
-            <a id="logo-container" href="#" class="brand-logo">Logo</a>
-            <ul class="right hide-on-med-and-down">
-                <li>
-                    <a href="gallery">Galerie</a>
-                </li>
-                
-            </ul>
-
-            <ul id="nav-mobile" class="side-nav">
-                <li>
-                    <a href="#">Navbar Link</a>
-                </li>
-            </ul>
-            <a href="#" data-activates="nav-mobile" class="button-collapse">
-                <i class="material-icons">menu</i>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="section">
-            <div class="row">
-                <div class="col s12 m4"> </div>
-                <div class="col s12 m4">
-                    
-                </div>
-                <div class="col s12 m4"> </div>
-            </div>
-        </div>
-    </div> -->
 
     <div class="footer">
-        View the source of this layout to learn more. Made with love by the YUI Team.
+        Created with PureCss
     </div>
 
 </body>

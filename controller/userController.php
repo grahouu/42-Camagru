@@ -144,7 +144,6 @@ class userController extends Controller{
     public function profile(){
 
         if ($_SERVER['REQUEST_METHOD'] == "POST"){
-            var_dump($_POST);
 
             $usersModel = new usersModel($this->getService("connection")->getConnection());
             if ($_POST["email"] && filter_var($user['email'], FILTER_VALIDATE_EMAIL)){

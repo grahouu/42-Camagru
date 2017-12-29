@@ -125,7 +125,6 @@ window.addEventListener("keydown", function (event) {
     var keysPressed = event.key.replace("Arrow", "");
 
     let mask = masks[masks.length - 1];
-    console.log(mask)
 
     if (event.key == "h" || event.key == "w")
         presskey[event.key] = !presskey[event.key];

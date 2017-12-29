@@ -7,18 +7,16 @@ $initDb = json_decode($initDb);
 
 $dsn = $initDb->db_driver. ":host=" .$initDb->db_host. ";port=" .$initDb->db_port. ";";
 
-print($dsn);
-
 try {
     //------------ Connexion db -------------
     $mysqli = new PDO($dsn, $initDb->db_user, $initDb->db_password);
     $mysqli->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connection successfully </br >";
+    echo "Connection successfully \n";
 
     //----------  Create database ----------
     $sql = "CREATE DATABASE IF NOT EXISTS ". $initDb->db_name;
     $mysqli->query($sql);
-    echo "Database created successfully </br >";
+    echo "Database created successfully \n";
 
     //-------- Create tables ----------
     foreach ($initDb->db_table as $table) {
@@ -26,7 +24,7 @@ try {
         // ------ Drop table -----
         $sql = "DROP TABLE IF EXISTS ". $initDb->db_name. "." .$table->name . ";";
         $mysqli->query($sql);
-        echo "Table ". $table->name ." droped successfully </br >";
+        echo "Table ". $table->name ." droped successfully \n";
 
         // ----- Create Table -------
         $sql = "CREATE TABLE ". $initDb->db_name. "." .$table->name ." ";
@@ -48,10 +46,10 @@ try {
 
         // ------ Execute sql -------
         $mysqli->query($sql);
-        echo "Table ". $table->name ." created successfully </br >";
+        echo "Table ". $table->name ." created successfully \n";
         if (isset($table->insert)){
             $mysqli->query(implode($table->insert));
-            echo "Element add in Table </br >";
+            echo "Element add in Table \n";
         }
     }
 

@@ -1,3 +1,5 @@
-<a href="signup">Creer un compte</a>
-<a href="signin">Se connecter</a> </br>
-<?php echo $msg ?>
+<div class="pure-g">
+    <div class="pure-u-1 center">
+        <?php echo $msg ?>
+    </div>
+</div>
