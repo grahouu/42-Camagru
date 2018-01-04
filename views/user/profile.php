@@ -6,11 +6,11 @@
                 <video id="video" autoplay></video>
             </div>
             <div class="pure-u-lg-12-24 pure-u-sm-1">
-                <canvas id="canvas" stlye="width: 100%;"></canvas>
+                <canvas id="canvas" class="preview"></canvas>
                 <canvas id='photo-tmp' style="display:none;"></canvas>
             </div>
         </div>
-        <div class="pure-g">
+        <!-- <div class="pure-g">
             <div class="mask-container pure-u-sm-1">
                 <?php
                 foreach ($masks as $mask) {
@@ -19,7 +19,7 @@
                 ?>
             </div>
         </div>
-        <div class="pure-g center">
+        <div class="pure-g center margin-top">
             <div class="pure-u-11-24">
                 <button id="takepicture">Prendre une photo</button>
             </div>
@@ -39,9 +39,9 @@
                     Generate !
                 </button>
             </div>
-        </div>
+        </div> -->
 
-        <div class="pure-g">
+        <!-- <div class="pure-g">
             <div class="pure-u-1 center">
             <form class="pure-form pure-form-aligned" method="post">
                 <fieldset>
@@ -71,9 +71,8 @@
                     </div>
                 </fieldset>
             </form>
-
             </div>
-        </div>
+        </div> -->
         
     </div>
 

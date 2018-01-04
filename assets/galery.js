@@ -1,7 +1,8 @@
-let pageActual      = localStorage.getItem("pageActual") != null ? parseInt(localStorage.getItem("pageActual")) : 1
+let pageActual = localStorage.getItem("pageActual") != null ? parseInt(localStorage.getItem("pageActual")) : 1
 let galeryContainer = document.querySelector(".galery-container");
-let pageMax         = document.querySelector("#page-max");
-var elemPageActual  = document.querySelector("#page-actual");
+let paginateElem = document.querySelector(".paginate");
+let pageMax = document.querySelector("#page-max");
+var elemPageActual = document.querySelector("#page-actual");
 
 function getEventTarget(e) {
     e = e || window.event;
@@ -9,10 +10,10 @@ function getEventTarget(e) {
 }
 
 // ----- LIKE FUNCTION -----
-function like(element, id){
+function like(element, id) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'photo/like/' + id);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             let response = JSON.parse(xhr.responseText);
             let nbLikes = document.querySelector("#nb-likes\\:" + id)
@@ -27,14 +28,14 @@ function like(element, id){
 }
 
 // ----- COMMENT FUNCTION -----
-function comment(element, id){
+function comment(element, id) {
     var modal = document.getElementById('myModalComment');
     var table = modal.querySelector('table');
     var span = modal.getElementsByClassName("close")[0];
     var btn = modal.getElementsByClassName("submit")[0];
     var xhr = new XMLHttpRequest();
 
-    function addComment(user, comment){
+    function addComment(user, comment) {
         var row = table.insertRow(-1);
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
@@ -44,14 +45,14 @@ function comment(element, id){
 
     modal.style.display = "block";
 
-    span.onclick = function() {
+    span.onclick = function () {
         modal.style.display = "none";
         while (table.rows.length > 1) {
             table.deleteRow(table.rows.length - 1);
         }
     }
 
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
             while (table.rows.length > 1) {
@@ -61,11 +62,11 @@ function comment(element, id){
     }
 
     xhr.open('GET', 'photo/comment/' + id);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            if (response.success){
-                for (var i in response.data){
+            if (response.success) {
+                for (var i in response.data) {
                     addComment(response.data[i].email, response.data[i].comment);
                 }
             }
@@ -74,16 +75,16 @@ function comment(element, id){
     xhr.send();
 
 
-    btn.onclick = function(event){
+    btn.onclick = function (event) {
         var form = document.getElementById('formComment');
         var data = new FormData(form);
 
         var text = form.elements["comment"].value;
         xhr.open('POST', 'photo/comment/' + id);
-        xhr.onload = function() {
+        xhr.onload = function () {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                if (response.success){
+                if (response.success) {
                     addComment(response.user, response.comment);
                     var nbComments = document.querySelector("#nb-comments\\:" + id)
                     var value = nbComments.innerHTML;
@@ -96,15 +97,15 @@ function comment(element, id){
 
 }
 
-function paginatePrev(){
+function paginatePrev() {
     if (elemPageActual.innerHTML <= 1)
         return;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'photo/paginate/' + --pageActual);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            if (response.success){
+            if (response.success) {
                 showPhotos(response);
             }
         }
@@ -112,15 +113,15 @@ function paginatePrev(){
     xhr.send();
 }
 
-function paginateNext(){
+function paginateNext() {
     if (elemPageActual.innerHTML >= pageMax.innerHTML)
         return;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'photo/paginate/' + ++pageActual);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            if (response.success){
+            if (response.success) {
                 showPhotos(response);
             }
         }
@@ -128,9 +129,9 @@ function paginateNext(){
     xhr.send();
 }
 
-function addPhoto(photo){
+function addPhoto(photo) {
     let html =
-    `<a hrel>
+        `<a hrel>
         <img src="${photo.photo}" alt="Meadow">
     </a>
     <aside class="photo-box-caption">
@@ -143,70 +144,18 @@ function addPhoto(photo){
     </aside>`
     let div = document.createElement("div");
     div.className = 'center photo-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-3';
-	div.innerHTML = html;
-    galeryContainer.appendChild(div)
-
-
-
-
-
-
-
-
-    // var li = document.createElement("li");
-
-    // var photo = document.createElement('img');
-    // photo.src = "/camagru/" + photoInfo.photo;
-    // photo.className = "photo";
-    // li.appendChild(photo);
-
-    // var div = document.createElement('div');
-    // div.className = "icons";
-
-    // if (userId == photoInfo.idUser){
-    //     var trash = document.createElement('img');
-    //     trash.src = "/camagru/assets/images/trash.png";
-    //     trash.className = "icons";
-    //     trash.setAttribute("onclick", "trash(this, "+ photoInfo.id +")");
-    //     div.appendChild(trash);
-    // }
-
-    // var like = document.createElement('img');
-    // like.src = "/camagru/assets/images/like.png";
-    // like.className = "icons";
-    // like.setAttribute("onclick", "like(this, "+ photoInfo.id +")");
-    // div.appendChild(like);
-
-    // var nbLikes = document.createElement('span');
-    // nbLikes.innerHTML = photoInfo.nbLikes;
-    // nbLikes.setAttribute("id", "nb-likes:" + photoInfo.id)
-    // div.appendChild(nbLikes);
-
-    // var comment = document.createElement('img');
-    // comment.src = "/camagru/assets/images/comment.png";
-    // comment.className = "icons";
-    // comment.setAttribute("onclick", "comment(this, "+ photoInfo.id +")");
-    // div.appendChild(comment);
-
-    // var nbComments = document.createElement('span');
-    // nbComments.innerHTML = photoInfo.nbComments;
-    // nbComments.setAttribute("id", "nb-comments:" + photoInfo.id)
-    // div.appendChild(nbComments);
-
-    // li.appendChild(div);
-
-    //imagesList.appendChild(li);
-    // imagesList.insertBefore(li, elemPaginate);
+    div.innerHTML = html;
+    galeryContainer.appendChild(div);
 }
 
 function showPhotos(info) {
     var paras = galeryContainer.getElementsByClassName('photo-box');
 
-    while(paras.length > 0) {
+    while (paras.length > 0) {
         paras[0].remove();
     }
 
-    for (var i in info.photos){
+    for (var i in info.photos) {
         addPhoto(info.photos[i]);
     }
 
@@ -217,14 +166,16 @@ function showPhotos(info) {
 function getPhotosPage(page) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'photo/paginate/' + page);
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            if (response.success){
-                if (response.TotalPhotos != '0' && !response.photos.length)
-                    paginatePage(--pageActual);
-                else
+            if (response.success) {
+                if (response.TotalPhotos != '0' && !response.photos.length){
+                    paginatePage(--pageActual)
+                }else if (response.TotalPhotos != '0'){
                     showPhotos(response);
+                    paginateElem.style.display = ""
+                }
             }
         }
     };

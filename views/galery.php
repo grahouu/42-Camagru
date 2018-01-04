@@ -1,8 +1,12 @@
 <div class="pure-g galery-container">
+    <div style="    font-size: x-large;
+    letter-spacing: normal;
+    text-align: center;
+    width: 100%;"> No photo </div>
 </div>
 
 <div class="pure-u-1">
-    <div class="l-box paginate">
+    <div class="l-box paginate" style="display: none;">
         <button onclick='paginatePrev()'>Prev</button>
         <span id='page-actual'>1</span>/<span id='page-max'>1</span>
         <button onclick='paginateNext()'>Next</button>

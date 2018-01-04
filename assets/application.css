@@ -6,6 +6,7 @@ html, body {
 
 #container {
   width: 100%;
+  margin: 5px;
 }
 
 .center {
@@ -20,6 +21,14 @@ html, body {
   text-align: right;
 }
 
+.title {
+  background: rgb(70, 70, 70);
+  height: 50px;
+  text-align: center;
+  color: white;
+  font-size: xx-large;
+}
+
 .header .pure-menu {
   border-bottom-color: black;
   border-radius: 0;
@@ -27,6 +36,16 @@ html, body {
 
 .home-menu ul {
   float: right;
+}
+
+.preview {
+  /* width: 100%; */
+  border-style: solid;
+  border-color: black;
+}
+
+.margin-top {
+  margin-top: 10px;
 }
 
 /*------------------------------------------ content --------------------------------------- */
@@ -186,9 +205,9 @@ html, body {
 /*------------------------------------ mask --------------------------------- */
 .mask-container {
   background-color: #e6e6e6;
-  overflow: auto;
   white-space: nowrap;
   height: 100px;
+  text-align: center;
 }
 
 .mask-container .mask{
@@ -209,6 +228,7 @@ html, body {
 .photos-container {
   overflow-y: scroll;
   height: 99%;
+  border-left-style: solid;
 }
 
 .icons-trash{

@@ -73,6 +73,7 @@ class App {
             return true;
         }else if($this->objRoute->urlExist() && isset($this->objRoute->jsonRoute["redirect"]) ){
             $this->redirect = $this->objRoute->jsonRoute["redirect"];
+            return true;
         }
         return false;
     }
@@ -80,8 +81,10 @@ class App {
     function run() {
         if ($this->runService() && $this->runRoute())
             call_user_func(array($this->controller, $this->action));
-        else
+        else if ($this->redirect != false)
             header('Location: /camagru/' . $this->redirect);
+        else
+            http_response_code(401);
     }
 
 }

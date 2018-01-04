@@ -17,7 +17,7 @@
 <body>
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal">
-            <a class="pure-menu-heading" href="home">Photo Gallery</a>
+            <a class="pure-menu-heading" href="home">Camagru</a>
 
             <ul class="pure-menu-list">
                 <?php if (isset($_SESSION["user"])) { ?>
@@ -37,7 +37,11 @@
                 <?php } ?>
             </ul>
         </div>
+        <div class="title">
+             <?php echo $this->title ?>
+        </div>
     </div>
+
 
     <div id="container">
         <?php echo $this->content ?>

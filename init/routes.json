@@ -6,6 +6,12 @@
         "auth": false
     },
     {
+        "name": "home",
+        "controller": "home",
+        "action": "galery",
+        "auth": false
+    },
+    {
         "name": "signin",
         "controller": "user",
         "action": "index",
@@ -62,21 +68,24 @@
         "controller": "user",
         "action": "deletePhoto",
         "auth": true,
-        "layout": false
+        "layout": false,
+        "redirect": false
     },
     {
         "name": "photo/like/:id([0-9]+)",
         "controller": "user",
         "action": "likePhoto",
         "auth": true,
-        "layout": false
+        "layout": false,
+        "redirect": false
     },
     {
         "name": "photo/comment/:id([0-9]+)",
         "controller": "user",
         "action": "commentPhoto",
         "auth": true,
-        "layout": false
+        "layout": false,
+        "redirect": false
     },
     {
         "name": "photo/paginate/:page([0-9]+)",
